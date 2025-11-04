@@ -2,6 +2,8 @@ import React from "react";
 import FormSection from "@/components/FormSection";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
+const sliderProps = { type: "slider", min: 1, max: 5, step: 1 };
+
 const MarketingStep: React.FC = () => {
   return (
     <div className="space-y-6">
@@ -11,7 +13,7 @@ const MarketingStep: React.FC = () => {
             8. Marketing
           </CardTitle>
           <p className="text-muted-foreground mt-2">
-            Selecione as habilidades e avalie seu nível geral em Marketing.
+            Avalie seu nível (1-5) em cada habilidade e seu nível geral em Marketing.
           </p>
         </CardHeader>
         <CardContent className="pt-6 space-y-6">
@@ -19,12 +21,12 @@ const MarketingStep: React.FC = () => {
             title="8.1 Marketing Digital"
             pathPrefix="marketing.marketingDigital"
             fields={[
-              { name: "seo", label: "SEO (on-page e off-page)", type: "checkbox" },
-              { name: "marketingConteudo", label: "Marketing de conteúdo", type: "checkbox" },
-              { name: "emailMarketing", label: "E-mail marketing", type: "checkbox" },
-              { name: "marketingPerformance", label: "Marketing de performance", type: "checkbox" },
-              { name: "growthHacking", label: "Growth hacking", type: "checkbox" },
-              { name: "marketingInfluencia", label: "Marketing de influência", type: "checkbox" },
+              { name: "seo", label: "SEO (on-page e off-page)", ...sliderProps },
+              { name: "marketingConteudo", label: "Marketing de conteúdo", ...sliderProps },
+              { name: "emailMarketing", label: "E-mail marketing", ...sliderProps },
+              { name: "marketingPerformance", label: "Marketing de performance", ...sliderProps },
+              { name: "growthHacking", label: "Growth hacking", ...sliderProps },
+              { name: "marketingInfluencia", label: "Marketing de influência", ...sliderProps },
             ]}
             cardClassName="border-inclusive-orange/30"
             headerClassName="bg-inclusive-orange/5"
@@ -35,12 +37,12 @@ const MarketingStep: React.FC = () => {
             title="8.2 Estratégia"
             pathPrefix="marketing.estrategia"
             fields={[
-              { name: "planejamentoEstrategico", label: "Planejamento estratégico", type: "checkbox" },
-              { name: "definicaoKpis", label: "Definição de KPIs", type: "checkbox" },
-              { name: "analiseMercado", label: "Análise de mercado", type: "checkbox" },
-              { name: "buyerPersonas", label: "Buyer personas", type: "checkbox" },
-              { name: "funilVendas", label: "Funil de vendas (TOFU, MOFU, BOFU)", type: "checkbox" },
-              { name: "customerJourneyMapping", label: "Customer journey mapping", type: "checkbox" },
+              { name: "planejamentoEstrategico", label: "Planejamento estratégico", ...sliderProps },
+              { name: "definicaoKpis", label: "Definição de KPIs", ...sliderProps },
+              { name: "analiseMercado", label: "Análise de mercado", ...sliderProps },
+              { name: "buyerPersonas", label: "Buyer personas", ...sliderProps },
+              { name: "funilVendas", label: "Funil de vendas (TOFU, MOFU, BOFU)", ...sliderProps },
+              { name: "customerJourneyMapping", label: "Customer journey mapping", ...sliderProps },
             ]}
             cardClassName="border-inclusive-orange/30"
             headerClassName="bg-inclusive-orange/5"
@@ -51,12 +53,12 @@ const MarketingStep: React.FC = () => {
             title="8.3 Análise e Dados"
             pathPrefix="marketing.analiseDados"
             fields={[
-              { name: "googleAnalyticsGa4", label: "Google Analytics (GA4)", type: "checkbox" },
-              { name: "googleSearchConsole", label: "Google Search Console", type: "checkbox" },
-              { name: "dataStudioLookerStudio", label: "Data Studio/Looker Studio", type: "checkbox" },
-              { name: "excelGoogleSheetsAvancado", label: "Excel/Google Sheets avançado", type: "checkbox" },
-              { name: "interpretacaoMetricas", label: "Interpretação de métricas", type: "checkbox" },
-              { name: "relatoriosPerformance", label: "Relatórios de performance", type: "checkbox" },
+              { name: "googleAnalyticsGa4", label: "Google Analytics (GA4)", ...sliderProps },
+              { name: "googleSearchConsole", label: "Google Search Console", ...sliderProps },
+              { name: "dataStudioLookerStudio", label: "Data Studio/Looker Studio", ...sliderProps },
+              { name: "excelGoogleSheetsAvancado", label: "Excel/Google Sheets avançado", ...sliderProps },
+              { name: "interpretacaoMetricas", label: "Interpretação de métricas", ...sliderProps },
+              { name: "relatoriosPerformance", label: "Relatórios de performance", ...sliderProps },
             ]}
             cardClassName="border-inclusive-orange/30"
             headerClassName="bg-inclusive-orange/5"
@@ -67,11 +69,11 @@ const MarketingStep: React.FC = () => {
             title="8.4 Automação"
             pathPrefix="marketing.automacao"
             fields={[
-              { name: "rdStation", label: "RD Station", type: "checkbox" },
-              { name: "hubSpot", label: "HubSpot", type: "checkbox" },
-              { name: "mailchimp", label: "Mailchimp", type: "checkbox" },
-              { name: "activeCampaign", label: "ActiveCampaign", type: "checkbox" },
-              { name: "zapierMake", label: "Zapier/Make", type: "checkbox" },
+              { name: "rdStation", label: "RD Station", ...sliderProps },
+              { name: "hubSpot", label: "HubSpot", ...sliderProps },
+              { name: "mailchimp", label: "Mailchimp", ...sliderProps },
+              { name: "activeCampaign", label: "ActiveCampaign", ...sliderProps },
+              { name: "zapierMake", label: "Zapier/Make", ...sliderProps },
             ]}
             cardClassName="border-inclusive-orange/30"
             headerClassName="bg-inclusive-orange/5"
@@ -82,7 +84,7 @@ const MarketingStep: React.FC = () => {
             title="Nível geral em Marketing"
             pathPrefix="marketing"
             fields={[
-              { name: "nivelGeral", label: "Avalie seu nível geral (1-5)", type: "slider", min: 1, max: 5, step: 1 },
+              { name: "nivelGeral", label: "Avalie seu nível geral (1-5)", ...sliderProps },
             ]}
             cardClassName="border-inclusive-orange/30"
             headerClassName="bg-inclusive-orange/5"

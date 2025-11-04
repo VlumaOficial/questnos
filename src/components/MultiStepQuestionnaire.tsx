@@ -24,7 +24,7 @@ import SoftSkillsStep from "@/components/form-steps/SoftSkillsStep";
 import SummaryStep from "@/components/form-steps/SummaryStep";
 
 const steps = [
-  { id: "branding", name: "Branding & Rebranding", component: BrandingRebrandingStep },
+  { id: "brandingRebranding", name: "Branding & Rebranding", component: BrandingRebrandingStep },
   { id: "copywriting", name: "Copywriting", component: CopywritingStep },
   { id: "redacao", name: "Redação", component: RedacaoStep },
   { id: "arteDesign", name: "Arte & Design", component: ArteDesignStep },
@@ -38,240 +38,265 @@ const steps = [
   { id: "summary", name: "Resumo", component: SummaryStep },
 ];
 
+// Helper para criar valores padrão 1 para todos os campos aninhados
+const createDefaultValues = (schema: z.ZodTypeAny): any => {
+  if (schema instanceof z.ZodObject) {
+    return Object.fromEntries(
+      Object.entries(schema.shape).map(([key, value]) => [
+        key,
+        createDefaultValues(value as z.ZodTypeAny),
+      ])
+    );
+  }
+  // Se for um número (slider), o default é 1.
+  if (schema instanceof z.ZodNumber) {
+    return 1;
+  }
+  // Se for um booleano (não deve mais existir, mas por segurança)
+  if (schema instanceof z.ZodBoolean) {
+    return false;
+  }
+  return undefined;
+};
+
+// Gerando valores padrão baseados no esquema atualizado
+const defaultValues: QuestionnaireSchema = {
+  brandingRebranding: {
+    estrategiaDeMarca: {
+      desenvolvimentoIdentidadeVisual: 1, criacaoNamingTaglines: 1, arquiteturaMarca: 1,
+      posicionamentoEstrategico: 1, brandGuidelinesManuais: 1, pesquisaMercadoPersonas: 1,
+      analiseConcorrencia: 1,
+    },
+    rebranding: {
+      auditoriaMarcaExistente: 1, estrategiaTransicaoMarca: 1, gestaoMudancaOrganizacional: 1,
+      comunicacaoRebranding: 1,
+    },
+    nivelGeral: 1,
+  },
+  copywriting: {
+    tecnicasDeEscrita: {
+      headlinesTitulosPersuasivos: 1, callToActionEfetivos: 1, storytellingComercial: 1,
+      copywritingConversao: 1, seoCopywriting: 1, microcopyUxWriting: 1,
+    },
+    formatos: {
+      anunciosPagos: 1, emailMarketing: 1, scriptsVideo: 1,
+      copyRedesSociais: 1, salesPages: 1,
+    },
+    nivelGeral: 1,
+  },
+  redacao: {
+    conteudoEditorial: {
+      artigosBlogSeo: 1, pressReleases: 1, casosEstudo: 1,
+      ebooksWhitepapers: 1, newsletters: 1, roteirosScripts: 1,
+    },
+    tomVoz: {
+      adaptacaoLinguagemPublico: 1, redacaoTecnica: 1, redacaoCriativa: 1,
+      revisaoEdicaoTextos: 1, gramaticaOrtografiaPtBr: 1,
+    },
+    nivelGeral: 1,
+  },
+  arteDesign: {
+    designGrafico: {
+      adobePhotoshop: 1, adobeIllustrator: 1, adobeInDesign: 1,
+      figma: 1, canvaPro: 1, corelDRAW: 1,
+    },
+    habilidadesCriativas: {
+      teoriaCores: 1, tipografia: 1, composicaoVisual: 1,
+      ilustracaoDigital: 1, manipulacaoImagens: 1, motionGraphicsBasico: 1,
+      designApresentacoes: 1,
+    },
+    materiais: {
+      pecasRedesSociais: 1, bannersOutdoors: 1, materiaisImpressos: 1,
+      embalagens: 1, identidadeVisualCompleta: 1,
+    },
+    nivelGeral: 1,
+  },
+  midiaSocial: {
+    plataformas: {
+      instagram: 1, facebook: 1, linkedin: 1,
+      tiktok: 1, youtube: 1, twitterX: 1,
+      pinterest: 1,
+    },
+    gestao: {
+      planejamentoConteudo: 1, calendarioEditorial: 1, analiseMetricasKpis: 1,
+      gerenciamentoComunidade: 1, atendimentoCliente: 1, gestaoCrises: 1,
+    },
+    ferramentas: {
+      metaBusinessSuite: 1, hootsuiteBuffer: 1, sproutSocial: 1,
+      laterPlanable: 1, analiseNativaPlataformas: 1,
+    },
+    nivelGeral: 1,
+  },
+  landingPages: {
+    desenvolvimento: {
+      htmlCssBasico: 1, wordpress: 1, elementorWpBakery: 1,
+      unbounce: 1, leadpages: 1, webflow: 1,
+      rdStationHubSpot: 1,
+    },
+    otimizacao: {
+      uxUiConversao: 1, testesAb: 1, otimizacaoFormularios: 1,
+      copywritingLandingPages: 1, analiseHeatmaps: 1, pageSpeedOptimization: 1,
+      mobileResponsiveness: 1,
+    },
+    integracoes: {
+      googleAnalytics: 1, googleTagManager: 1, pixelFacebookMeta: 1,
+      crm: 1, ferramentasAutomacao: 1,
+    },
+    nivelGeral: 1,
+  },
+  publicidade: {
+    midiaPaga: {
+      googleAds: 1, metaAds: 1, linkedinAds: 1,
+      tiktokAds: 1, pinterestAds: 1, programatica: 1,
+    },
+    estrategia: {
+      definicaoPublicoAlvo: 1, segmentacaoAvancada: 1, budgetLances: 1,
+      funisConversao: 1, remarketingRetargeting: 1, analiseRoiRoas: 1,
+    },
+    creative: {
+      criacaoAnuncios: 1, testesCriativos: 1, videoAds: 1,
+      carouselColecoes: 1,
+    },
+    nivelGeral: 1,
+  },
+  marketing: {
+    marketingDigital: {
+      seo: 1, marketingConteudo: 1, emailMarketing: 1,
+      marketingPerformance: 1, growthHacking: 1, marketingInfluencia: 1,
+    },
+    estrategia: {
+      planejamentoEstrategico: 1, definicaoKpis: 1, analiseMercado: 1,
+      buyerPersonas: 1, funilVendas: 1, customerJourneyMapping: 1,
+    },
+    analiseDados: {
+      googleAnalyticsGa4: 1, googleSearchConsole: 1, dataStudioLookerStudio: 1,
+      excelGoogleSheetsAvancado: 1, interpretacaoMetricas: 1, relatoriosPerformance: 1,
+    },
+    automacao: {
+      rdStation: 1, hubSpot: 1, mailchimp: 1,
+      activeCampaign: 1, zapierMake: 1,
+    },
+    nivelGeral: 1,
+  },
+  tecnologiaAutomacoes: {
+    infraestruturaTecnologica: {
+      dominiosDns: 1, hospedagemWeb: 1, servidoresCloudComputing: 1,
+      sslCertificadosSeguranca: 1, cdn: 1, backupRecuperacaoDados: 1,
+    },
+    desenvolvimentoWeb: {
+      htmlCss3: 1, javaScriptBasico: 1, wordpressInstalacaoConfiguracao: 1,
+      pluginsEssenciaisWordpress: 1, phpBasico: 1, apisIntegracoes: 1,
+      versionamentoGitGithub: 1, responsiveDesign: 1,
+    },
+    cmsPlataformas: {
+      wordpress: 1, webflow: 1, shopify: 1,
+      wixSquarespace: 1, drupalJoomla: 1, headlessCms: 1,
+    },
+    automacaoMarketing: {
+      rdStationMarketing: 1, hubSpotWorkflows: 1, activeCampaignAutomacoes: 1,
+      mailchimpCustomerJourneys: 1, klaviyoEcommerceAutomation: 1, marketingCloudSalesforce: 1,
+    },
+    automacaoProcessosNoCodeLowCode: {
+      zapier: 1, makeIntegromat: 1, n8n: 1,
+      pabblyConnect: 1, automateIo: 1, microsoftPowerAutomate: 1,
+      ifttt: 1,
+    },
+    automacaoRedesSociais: {
+      agendamentoAutomatico: 1, chatbotsInstagramFacebook: 1, manyChat: 1,
+      chatfuel: 1, respostaAutomaticaDm: 1, automacaoStoriesPosts: 1,
+    },
+    crmGestaoClientes: {
+      hubSpotCrm: 1, rdStationCrm: 1, salesforce: 1,
+      pipedrive: 1, bitrix24: 1, zohoCrm: 1,
+      mondaySalesCrm: 1,
+    },
+    automacaoWhatsappBusiness: {
+      whatsappBusinessApi: 1, chatbotsWhatsapp: 1, integracaoCrm: 1,
+      disparosMassa: 1, automacaoAtendimento: 1, plataformasTwilioZenviaTakeBlip: 1,
+    },
+    iaFerramentasInteligentes: {
+      chatGptClaude: 1, midjourneyDallE: 1, jasperAi: 1,
+      copyAi: 1, runwayMl: 1, removeBg: 1,
+      grammarly: 1, iaAnaliseDados: 1,
+    },
+    automacaoRelatorios: {
+      googleDataStudioLookerStudio: 1, powerBi: 1, tableau: 1,
+      dashboardsAutomaticos: 1, integracaoMultiplasFontesDados: 1, relatoriosAgendadosAutomaticamente: 1,
+      googleSheetsScripts: 1,
+    },
+    ferramentasColaboracao: {
+      slack: 1, microsoftTeams: 1, discord: 1,
+      notionBaseConhecimento: 1, googleWorkspace: 1, asanaTrelloMonday: 1,
+    },
+    ecommercePagamentos: {
+      integracaoGatewaysPagamento: 1, stripe: 1, paypal: 1,
+      mercadoPago: 1, pagSeguro: 1, automacaoCarrinhoAbandonado: 1,
+      upsellCrossSellAutomatizados: 1,
+    },
+    automacaoEmail: {
+      sequenciasNutricao: 1, segmentacaoDinamica: 1, triggersComportamentais: 1,
+      abTestingAutomatizado: 1, reEngajamentoAutomatico: 1, integracaoEventosSite: 1,
+    },
+    ferramentasProdutividade: {
+      loom: 1, calendly: 1, typeformGoogleForms: 1,
+      docusignAssinaturasDigitais: 1, notionCodaDocumentacao: 1, airtableBancoDadosVisual: 1,
+    },
+    seoTecnicoFerramentas: {
+      googleSearchConsole: 1, semrushAhrefs: 1, screamingFrog: 1,
+      schemaMarkup: 1, sitemapXml: 1, robotsTxt: 1,
+      coreWebVitals: 1,
+    },
+    segurancaCompliance: {
+      lgpd: 1, cookiesConsentimento: 1, politicasPrivacidade: 1,
+      segurancaDadosClientes: 1, autenticacaoDoisFatores: 1, firewallProtecaoMalware: 1,
+    },
+    analyticsTagManagement: {
+      googleAnalytics4: 1, googleTagManager: 1, facebookPixel: 1,
+      hotjarCrazyEgg: 1, mixpanel: 1, configuracaoEventosCustomizados: 1,
+    },
+    automacaoPropostasContratos: {
+      pandadoc: 1, proposify: 1, docusign: 1,
+      hellosign: 1, templatesAutomatizados: 1, followUpAutomaticoPropostas: 1,
+    },
+    gestaoFinanceiraAutomatizada: {
+      integracaoBancaria: 1, emissaoNotasFiscaisAutomaticas: 1, cobrancasRecorrentes: 1,
+      controleFluxoCaixa: 1, ferramentasContaAzulOmieBling: 1,
+    },
+    backupRecuperacao: {
+      backupAutomaticoSites: 1, backupDadosCrm: 1, versionamentoArquivos: 1,
+      planoDisasterRecovery: 1, cloudBackup: 1,
+    },
+    nivelGeral: 1,
+  },
+  habilidadesComplementares: {
+    gestaoProjetos: {
+      metodologiasAgeis: 1, trelloAsanaMonday: 1, gestaoPrazos: 1,
+      briefingDebriefing: 1, gestaoEquipe: 1,
+    },
+    atendimentoCliente: {
+      relacionamentoCliente: 1, apresentacoesComerciais: 1, negociacao: 1,
+      propostasComerciais: 1,
+    },
+    outrasSkills: {
+      fotografiaBasica: 1, edicaoVideo: 1, producaoAudiovisual: 1,
+      audioPodcast: 1, nocoesProgramacao: 1,
+    },
+    nivelGeral: 1,
+  },
+  softSkills: {
+    criatividade: 1, comunicacao: 1, trabalhoEmEquipe: 1,
+    gestaoDeTempo: 1, proatividade: 1, resolucaoDeProblemas: 1,
+    adaptabilidade: 1, atencaoAosDetalhes: 1, sensoDeUrgencia: 1,
+    capacidadeAnalitica: 1, nivelGeral: 1,
+  },
+};
+
+
 const MultiStepQuestionnaire: React.FC = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const methods = useForm<QuestionnaireSchema>({
     resolver: zodResolver(questionnaireSchema),
-    defaultValues: {
-      // Default values for all fields as per schema
-      brandingRebranding: {
-        estrategiaDeMarca: {
-          desenvolvimentoIdentidadeVisual: false, criacaoNamingTaglines: false, arquiteturaMarca: false,
-          posicionamentoEstrategico: false, brandGuidelinesManuais: false, pesquisaMercadoPersonas: false,
-          analiseConcorrencia: false,
-        },
-        rebranding: {
-          auditoriaMarcaExistente: false, estrategiaTransicaoMarca: false, gestaoMudancaOrganizacional: false,
-          comunicacaoRebranding: false,
-        },
-      },
-      copywriting: {
-        tecnicasDeEscrita: {
-          headlinesTitulosPersuasivos: false, callToActionEfetivos: false, storytellingComercial: false,
-          copywritingConversao: false, seoCopywriting: false, microcopyUxWriting: false,
-        },
-        formatos: {
-          anunciosPagos: false, emailMarketing: false, scriptsVideo: false,
-          copyRedesSociais: false, salesPages: false,
-        },
-        nivelGeral: 1,
-      },
-      redacao: {
-        conteudoEditorial: {
-          artigosBlogSeo: false, pressReleases: false, casosEstudo: false,
-          ebooksWhitepapers: false, newsletters: false, roteirosScripts: false,
-        },
-        tomVoz: {
-          adaptacaoLinguagemPublico: false, redacaoTecnica: false, redacaoCriativa: false,
-          revisaoEdicaoTextos: false, gramaticaOrtografiaPtBr: false,
-        },
-        nivelGeral: 1,
-      },
-      arteDesign: {
-        designGrafico: {
-          adobePhotoshop: false, adobeIllustrator: false, adobeInDesign: false,
-          figma: false, canvaPro: false, corelDRAW: false,
-        },
-        habilidadesCriativas: {
-          teoriaCores: false, tipografia: false, composicaoVisual: false,
-          ilustracaoDigital: false, manipulacaoImagens: false, motionGraphicsBasico: false,
-          designApresentacoes: false,
-        },
-        materiais: {
-          pecasRedesSociais: false, bannersOutdoors: false, materiaisImpressos: false,
-          embalagens: false, identidadeVisualCompleta: false,
-        },
-        nivelGeral: 1,
-      },
-      midiaSocial: {
-        plataformas: {
-          instagram: false, facebook: false, linkedin: false,
-          tiktok: false, youtube: false, twitterX: false,
-          pinterest: false,
-        },
-        gestao: {
-          planejamentoConteudo: false, calendarioEditorial: false, analiseMetricasKpis: false,
-          gerenciamentoComunidade: false, atendimentoCliente: false, gestaoCrises: false,
-        },
-        ferramentas: {
-          metaBusinessSuite: false, hootsuiteBuffer: false, sproutSocial: false,
-          laterPlanable: false, analiseNativaPlataformas: false,
-        },
-        nivelGeral: 1,
-      },
-      landingPages: {
-        desenvolvimento: {
-          htmlCssBasico: false, wordpress: false, elementorWpBakery: false,
-          unbounce: false, leadpages: false, webflow: false,
-          rdStationHubSpot: false,
-        },
-        otimizacao: {
-          uxUiConversao: false, testesAb: false, otimizacaoFormularios: false,
-          copywritingLandingPages: false, analiseHeatmaps: false, pageSpeedOptimization: false,
-          mobileResponsiveness: false,
-        },
-        integracoes: {
-          googleAnalytics: false, googleTagManager: false, pixelFacebookMeta: false,
-          crm: false, ferramentasAutomacao: false,
-        },
-        nivelGeral: 1,
-      },
-      publicidade: {
-        midiaPaga: {
-          googleAds: false, metaAds: false, linkedinAds: false,
-          tiktokAds: false, pinterestAds: false, programatica: false,
-        },
-        estrategia: {
-          definicaoPublicoAlvo: false, segmentacaoAvancada: false, budgetLances: false,
-          funisConversao: false, remarketingRetargeting: false, analiseRoiRoas: false,
-        },
-        creative: {
-          criacaoAnuncios: false, testesCriativos: false, videoAds: false,
-          carouselColecoes: false,
-        },
-        nivelGeral: 1,
-      },
-      marketing: {
-        marketingDigital: {
-          seo: false, marketingConteudo: false, emailMarketing: false,
-          marketingPerformance: false, growthHacking: false, marketingInfluencia: false,
-        },
-        estrategia: {
-          planejamentoEstrategico: false, definicaoKpis: false, analiseMercado: false,
-          buyerPersonas: false, funilVendas: false, customerJourneyMapping: false,
-        },
-        analiseDados: {
-          googleAnalyticsGa4: false, googleSearchConsole: false, dataStudioLookerStudio: false,
-          excelGoogleSheetsAvancado: false, interpretacaoMetricas: false, relatoriosPerformance: false,
-        },
-        automacao: {
-          rdStation: false, hubSpot: false, mailchimp: false,
-          activeCampaign: false, zapierMake: false,
-        },
-        nivelGeral: 1,
-      },
-      tecnologiaAutomacoes: {
-        infraestruturaTecnologica: {
-          dominiosDns: false, hospedagemWeb: false, servidoresCloudComputing: false,
-          sslCertificadosSeguranca: false, cdn: false, backupRecuperacaoDados: false,
-        },
-        desenvolvimentoWeb: {
-          htmlCss3: false, javaScriptBasico: false, wordpressInstalacaoConfiguracao: false,
-          pluginsEssenciaisWordpress: false, phpBasico: false, apisIntegracoes: false,
-          versionamentoGitGithub: false, responsiveDesign: false,
-        },
-        cmsPlataformas: {
-          wordpress: false, webflow: false, shopify: false,
-          wixSquarespace: false, drupalJoomla: false, headlessCms: false,
-        },
-        automacaoMarketing: {
-          rdStationMarketing: false, hubSpotWorkflows: false, activeCampaignAutomacoes: false,
-          mailchimpCustomerJourneys: false, klaviyoEcommerceAutomation: false, marketingCloudSalesforce: false,
-        },
-        automacaoProcessosNoCodeLowCode: {
-          zapier: false, makeIntegromat: false, n8n: false,
-          pabblyConnect: false, automateIo: false, microsoftPowerAutomate: false,
-          ifttt: false,
-        },
-        automacaoRedesSociais: {
-          agendamentoAutomatico: false, chatbotsInstagramFacebook: false, manyChat: false,
-          chatfuel: false, respostaAutomaticaDm: false, automacaoStoriesPosts: false,
-        },
-        crmGestaoClientes: {
-          hubSpotCrm: false, rdStationCrm: false, salesforce: false,
-          pipedrive: false, bitrix24: false, zohoCrm: false,
-          mondaySalesCrm: false,
-        },
-        automacaoWhatsappBusiness: {
-          whatsappBusinessApi: false, chatbotsWhatsapp: false, integracaoCrm: false,
-          disparosMassa: false, automacaoAtendimento: false, plataformasTwilioZenviaTakeBlip: false,
-        },
-        iaFerramentasInteligentes: {
-          chatGptClaude: false, midjourneyDallE: false, jasperAi: false,
-          copyAi: false, runwayMl: false, removeBg: false,
-          grammarly: false, iaAnaliseDados: false,
-        },
-        automacaoRelatorios: {
-          googleDataStudioLookerStudio: false, powerBi: false, tableau: false,
-          dashboardsAutomaticos: false, integracaoMultiplasFontesDados: false, relatoriosAgendadosAutomaticamente: false,
-          googleSheetsScripts: false,
-        },
-        ferramentasColaboracao: {
-          slack: false, microsoftTeams: false, discord: false,
-          notionBaseConhecimento: false, googleWorkspace: false, asanaTrelloMonday: false,
-        },
-        ecommercePagamentos: {
-          integracaoGatewaysPagamento: false, stripe: false, paypal: false,
-          mercadoPago: false, pagSeguro: false, automacaoCarrinhoAbandonado: false,
-          upsellCrossSellAutomatizados: false,
-        },
-        automacaoEmail: {
-          sequenciasNutricao: false, segmentacaoDinamica: false, triggersComportamentais: false,
-          abTestingAutomatizado: false, reEngajamentoAutomatico: false, integracaoEventosSite: false,
-        },
-        ferramentasProdutividade: {
-          loom: false, calendly: false, typeformGoogleForms: false,
-          docusignAssinaturasDigitais: false, notionCodaDocumentacao: false, airtableBancoDadosVisual: false,
-        },
-        seoTecnicoFerramentas: {
-          googleSearchConsole: false, semrushAhrefs: false, screamingFrog: false,
-          schemaMarkup: false, sitemapXml: false, robotsTxt: false,
-          coreWebVitals: false,
-        },
-        segurancaCompliance: {
-          lgpd: false, cookiesConsentimento: false, politicasPrivacidade: false,
-          segurancaDadosClientes: false, autenticacaoDoisFatores: false, firewallProtecaoMalware: false,
-        },
-        analyticsTagManagement: {
-          googleAnalytics4: false, googleTagManager: false, facebookPixel: false,
-          hotjarCrazyEgg: false, mixpanel: false, configuracaoEventosCustomizados: false,
-        },
-        automacaoPropostasContratos: {
-          pandadoc: false, proposify: false, docusign: false,
-          hellosign: false, templatesAutomatizados: false, followUpAutomaticoPropostas: false,
-        },
-        gestaoFinanceiraAutomatizada: {
-          integracaoBancaria: false, emissaoNotasFiscaisAutomaticas: false, cobrancasRecorrentes: false,
-          controleFluxoCaixa: false, ferramentasContaAzulOmieBling: false,
-        },
-        backupRecuperacao: {
-          backupAutomaticoSites: false, backupDadosCrm: false, versionamentoArquivos: false,
-          planoDisasterRecovery: false, cloudBackup: false,
-        },
-        nivelGeral: 1,
-      },
-      habilidadesComplementares: {
-        gestaoProjetos: {
-          metodologiasAgeis: false, trelloAsanaMonday: false, gestaoPrazos: false,
-          briefingDebriefing: false, gestaoEquipe: false,
-        },
-        atendimentoCliente: {
-          relacionamentoCliente: false, apresentacoesComerciais: false, negociacao: false,
-          propostasComerciais: false,
-        },
-        outrasSkills: {
-          fotografiaBasica: false, edicaoVideo: false, producaoAudiovisual: false,
-          audioPodcast: false, nocoesProgramacao: false,
-        },
-        nivelGeral: 1,
-      },
-      softSkills: {
-        criatividade: 1, comunicacao: 1, trabalhoEmEquipe: 1,
-        gestaoDeTempo: 1, proatividade: 1, resolucaoDeProblemas: 1,
-        adaptabilidade: 1, atencaoAosDetalhes: 1, sensoDeUrgencia: 1,
-        capacidadeAnalitica: 1, nivelGeral: 1,
-      },
-    },
+    defaultValues: defaultValues,
   });
 
   const totalSteps = steps.length;
@@ -279,7 +304,8 @@ const MultiStepQuestionnaire: React.FC = () => {
 
   const handleNext = async () => {
     const currentStepId = steps[currentStep].id;
-    const isValid = await methods.trigger(currentStepId as keyof QuestionnaireSchema);
+    // A validação deve ser feita apenas no nível superior da seção atual
+    const isValid = await methods.trigger(currentStepId as keyof QuestionnaireSchema, { shouldFocus: true });
 
     if (isValid) {
       if (currentStep < totalSteps - 1) {
@@ -308,7 +334,7 @@ const MultiStepQuestionnaire: React.FC = () => {
     toast({
       title: "Questionário enviado com sucesso!",
       description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4 overflow-auto max-h-96">
           <code className="text-white">{JSON.stringify(data, null, 2)}</code>
         </pre>
       ),

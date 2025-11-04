@@ -3,49 +3,62 @@ import { useFormContext } from "react-hook-form";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { QuestionnaireSchema } from "@/schemas/questionnaireSchema";
 
+const formatKey = (key: string) => {
+  // Converte camelCase para texto com espaços e capitaliza a primeira letra
+  return key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase());
+};
+
+const renderData = (data: any, level: number = 0) => {
+  if (!data || typeof data !== 'object') return null;
+
+  return Object.entries(data).map(([key, value]) => {
+    const formattedKey = formatKey(key);
+    const isNestedObject = typeof value === "object" && value !== null && !Array.isArray(value);
+    const isNumber = typeof value === "number";
+
+    if (isNestedObject) {
+      // Renderiza subseções
+      return (
+        <div key={key} className={`mt-3 ${level > 0 ? 'ml-4 border-l pl-3 border-inclusive-purple/20' : ''}`}>
+          <h4 className={`font-semibold ${level === 0 ? 'text-lg text-inclusive-orange' : 'text-base text-inclusive-blue/90'}`}>
+            {formattedKey}
+          </h4>
+          {renderData(value, level + 1)}
+        </div>
+      );
+    } else if (isNumber) {
+      // Renderiza campos de slider (1-5)
+      const displayValue = value;
+      const valueClass = "font-bold text-inclusive-blue";
+      
+      return (
+        <p key={key} className={`text-sm text-foreground mt-1 ${level > 0 ? 'ml-2' : ''}`}>
+          <span className="font-medium text-muted-foreground">{formattedKey}:</span>{" "}
+          <span className={valueClass}>{displayValue}</span>
+        </p>
+      );
+    }
+    return null;
+  });
+};
+
 const SummaryStep: React.FC = () => {
   const { getValues } = useFormContext<QuestionnaireSchema>();
   const formData = getValues();
 
-  const renderSection = (title: string, data: any) => {
-    if (!data) return null;
-
-    return (
-      <div className="mb-6 p-4 border rounded-md bg-muted/20 border-inclusive-purple/30">
-        <h3 className="text-xl font-semibold text-inclusive-purple mb-3">{title}</h3>
-        {Object.entries(data).map(([key, value]) => {
-          if (typeof value === "boolean") {
-            return (
-              <p key={key} className="text-sm text-foreground">
-                <span className="font-medium">{key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}:</span>{" "}
-                {value ? "Sim" : "Não"}
-              </p>
-            );
-          } else if (typeof value === "number") {
-            return (
-              <p key={key} className="text-sm text-foreground">
-                <span className="font-medium">{key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}:</span>{" "}
-                {value}
-              </p>
-            );
-          } else if (typeof value === "object" && value !== null) {
-            return (
-              <div key={key} className="ml-4 mt-2">
-                <h4 className="font-medium text-inclusive-orange/80">{key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}</h4>
-                {Object.entries(value).map(([subKey, subValue]) => (
-                  <p key={subKey} className="text-xs text-muted-foreground ml-2">
-                    <span className="font-normal">{subKey.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}:</span>{" "}
-                    {typeof subValue === "boolean" ? (subValue ? "Sim" : "Não") : subValue}
-                  </p>
-                ))}
-              </div>
-            );
-          }
-          return null;
-        })}
-      </div>
-    );
-  };
+  const sections = [
+    { title: "1. Branding & Rebranding", key: "brandingRebranding" },
+    { title: "2. Copywriting", key: "copywriting" },
+    { title: "3. Redação", key: "redacao" },
+    { title: "4. Arte & Design", key: "arteDesign" },
+    { title: "5. Mídia Social", key: "midiaSocial" },
+    { title: "6. Landing Pages", key: "landingPages" },
+    { title: "7. Publicidade", key: "publicidade" },
+    { title: "8. Marketing", key: "marketing" },
+    { title: "9. Tecnologia & Automações", key: "tecnologiaAutomacoes" },
+    { title: "10. Habilidades Complementares", key: "habilidadesComplementares" },
+    { title: "11. Soft Skills", key: "softSkills" },
+  ];
 
   return (
     <div className="space-y-6">
@@ -59,17 +72,14 @@ const SummaryStep: React.FC = () => {
           </p>
         </CardHeader>
         <CardContent className="pt-6 space-y-6">
-          {renderSection("Branding & Rebranding", formData.brandingRebranding)}
-          {renderSection("Copywriting", formData.copywriting)}
-          {renderSection("Redação", formData.redacao)}
-          {renderSection("Arte & Design", formData.arteDesign)}
-          {renderSection("Mídia Social", formData.midiaSocial)}
-          {renderSection("Landing Pages", formData.landingPages)}
-          {renderSection("Publicidade", formData.publicidade)}
-          {renderSection("Marketing", formData.marketing)}
-          {renderSection("Tecnologia & Automações", formData.tecnologiaAutomacoes)}
-          {renderSection("Habilidades Complementares", formData.habilidadesComplementares)}
-          {renderSection("Soft Skills", formData.softSkills)}
+          {sections.map(section => (
+            <div key={section.key} className="p-4 border rounded-md bg-muted/20 border-inclusive-purple/30">
+              <h3 className="text-xl font-bold text-inclusive-purple mb-3 border-b pb-2">
+                {section.title}
+              </h3>
+              {renderData(formData[section.key as keyof QuestionnaireSchema])}
+            </div>
+          ))}
 
           <div className="mt-8 p-4 bg-inclusive-yellow/10 rounded-md border border-inclusive-orange">
             <h2 className="text-xl font-semibold text-inclusive-blue mb-3">Instruções de Avaliação</h2>

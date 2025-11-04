@@ -2,6 +2,8 @@ import React from "react";
 import FormSection from "@/components/FormSection";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
+const sliderProps = { type: "slider", min: 1, max: 5, step: 1 };
+
 const RedacaoStep: React.FC = () => {
   return (
     <div className="space-y-6">
@@ -11,7 +13,7 @@ const RedacaoStep: React.FC = () => {
             3. Redação
           </CardTitle>
           <p className="text-muted-foreground mt-2">
-            Selecione as habilidades e avalie seu nível geral em Redação.
+            Avalie seu nível (1-5) em cada habilidade e seu nível geral em Redação.
           </p>
         </CardHeader>
         <CardContent className="pt-6 space-y-6">
@@ -19,12 +21,12 @@ const RedacaoStep: React.FC = () => {
             title="3.1 Conteúdo Editorial"
             pathPrefix="redacao.conteudoEditorial"
             fields={[
-              { name: "artigosBlogSeo", label: "Artigos para blog/SEO", type: "checkbox" },
-              { name: "pressReleases", label: "Press releases", type: "checkbox" },
-              { name: "casosEstudo", label: "Casos de estudo", type: "checkbox" },
-              { name: "ebooksWhitepapers", label: "Ebooks e whitepapers", type: "checkbox" },
-              { name: "newsletters", label: "Newsletters", type: "checkbox" },
-              { name: "roteirosScripts", label: "Roteiros e scripts", type: "checkbox" },
+              { name: "artigosBlogSeo", label: "Artigos para blog/SEO", ...sliderProps },
+              { name: "pressReleases", label: "Press releases", ...sliderProps },
+              { name: "casosEstudo", label: "Casos de estudo", ...sliderProps },
+              { name: "ebooksWhitepapers", label: "Ebooks e whitepapers", ...sliderProps },
+              { name: "newsletters", label: "Newsletters", ...sliderProps },
+              { name: "roteirosScripts", label: "Roteiros e scripts", ...sliderProps },
             ]}
             cardClassName="border-inclusive-yellow/30"
             headerClassName="bg-inclusive-yellow/5"
@@ -35,11 +37,11 @@ const RedacaoStep: React.FC = () => {
             title="3.2 Tom e Voz"
             pathPrefix="redacao.tomVoz"
             fields={[
-              { name: "adaptacaoLinguagemPublico", label: "Adaptação de linguagem por público", type: "checkbox" },
-              { name: "redacaoTecnica", label: "Redação técnica", type: "checkbox" },
-              { name: "redacaoCriativa", label: "Redação criativa", type: "checkbox" },
-              { name: "revisaoEdicaoTextos", label: "Revisão e edição de textos", type: "checkbox" },
-              { name: "gramaticaOrtografiaPtBr", label: "Gramática e ortografia (PT-BR)", type: "checkbox" },
+              { name: "adaptacaoLinguagemPublico", label: "Adaptação de linguagem por público", ...sliderProps },
+              { name: "redacaoTecnica", label: "Redação técnica", ...sliderProps },
+              { name: "redacaoCriativa", label: "Redação criativa", ...sliderProps },
+              { name: "revisaoEdicaoTextos", label: "Revisão e edição de textos", ...sliderProps },
+              { name: "gramaticaOrtografiaPtBr", label: "Gramática e ortografia (PT-BR)", ...sliderProps },
             ]}
             cardClassName="border-inclusive-yellow/30"
             headerClassName="bg-inclusive-yellow/5"
@@ -50,7 +52,7 @@ const RedacaoStep: React.FC = () => {
             title="Nível geral em Redação"
             pathPrefix="redacao"
             fields={[
-              { name: "nivelGeral", label: "Avalie seu nível geral (1-5)", type: "slider", min: 1, max: 5, step: 1 },
+              { name: "nivelGeral", label: "Avalie seu nível geral (1-5)", ...sliderProps },
             ]}
             cardClassName="border-inclusive-yellow/30"
             headerClassName="bg-inclusive-yellow/5"
