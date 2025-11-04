@@ -71,7 +71,6 @@ const defaultValues: QuestionnaireSchema = {
       auditoriaMarcaExistente: 1, estrategiaTransicaoMarca: 1, gestaoMudancaOrganizacional: 1,
       comunicacaoRebranding: 1,
     },
-    nivelGeral: 1,
   },
   copywriting: {
     tecnicasDeEscrita: {
@@ -82,7 +81,6 @@ const defaultValues: QuestionnaireSchema = {
       anunciosPagos: 1, emailMarketing: 1, scriptsVideo: 1,
       copyRedesSociais: 1, salesPages: 1,
     },
-    nivelGeral: 1,
   },
   redacao: {
     conteudoEditorial: {
@@ -93,7 +91,6 @@ const defaultValues: QuestionnaireSchema = {
       adaptacaoLinguagemPublico: 1, redacaoTecnica: 1, redacaoCriativa: 1,
       revisaoEdicaoTextos: 1, gramaticaOrtografiaPtBr: 1,
     },
-    nivelGeral: 1,
   },
   arteDesign: {
     designGrafico: {
@@ -109,7 +106,6 @@ const defaultValues: QuestionnaireSchema = {
       pecasRedesSociais: 1, bannersOutdoors: 1, materiaisImpressos: 1,
       embalagens: 1, identidadeVisualCompleta: 1,
     },
-    nivelGeral: 1,
   },
   midiaSocial: {
     plataformas: {
@@ -125,7 +121,6 @@ const defaultValues: QuestionnaireSchema = {
       metaBusinessSuite: 1, hootsuiteBuffer: 1, sproutSocial: 1,
       laterPlanable: 1, analiseNativaPlataformas: 1,
     },
-    nivelGeral: 1,
   },
   landingPages: {
     desenvolvimento: {
@@ -142,7 +137,6 @@ const defaultValues: QuestionnaireSchema = {
       googleAnalytics: 1, googleTagManager: 1, pixelFacebookMeta: 1,
       crm: 1, ferramentasAutomacao: 1,
     },
-    nivelGeral: 1,
   },
   publicidade: {
     midiaPaga: {
@@ -157,7 +151,6 @@ const defaultValues: QuestionnaireSchema = {
       criacaoAnuncios: 1, testesCriativos: 1, videoAds: 1,
       carouselColecoes: 1,
     },
-    nivelGeral: 1,
   },
   marketing: {
     marketingDigital: {
@@ -176,7 +169,6 @@ const defaultValues: QuestionnaireSchema = {
       rdStation: 1, hubSpot: 1, mailchimp: 1,
       activeCampaign: 1, zapierMake: 1,
     },
-    nivelGeral: 1,
   },
   tecnologiaAutomacoes: {
     infraestruturaTecnologica: {
@@ -266,7 +258,6 @@ const defaultValues: QuestionnaireSchema = {
       backupAutomaticoSites: 1, backupDadosCrm: 1, versionamentoArquivos: 1,
       planoDisasterRecovery: 1, cloudBackup: 1,
     },
-    nivelGeral: 1,
   },
   habilidadesComplementares: {
     gestaoProjetos: {
@@ -281,13 +272,12 @@ const defaultValues: QuestionnaireSchema = {
       fotografiaBasica: 1, edicaoVideo: 1, producaoAudiovisual: 1,
       audioPodcast: 1, nocoesProgramacao: 1,
     },
-    nivelGeral: 1,
   },
   softSkills: {
     criatividade: 1, comunicacao: 1, trabalhoEmEquipe: 1,
     gestaoDeTempo: 1, proatividade: 1, resolucaoDeProblemas: 1,
     adaptabilidade: 1, atencaoAosDetalhes: 1, sensoDeUrgencia: 1,
-    capacidadeAnalitica: 1, nivelGeral: 1,
+    capacidadeAnalitica: 1,
   },
 };
 

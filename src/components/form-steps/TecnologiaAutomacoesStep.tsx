@@ -343,17 +343,6 @@ const TecnologiaAutomacoesStep: React.FC = () => {
             headerClassName="bg-inclusive-yellow/5"
             titleClassName="text-inclusive-yellow"
           />
-
-          <FormSection
-            title="Nível geral em Tecnologia & Automações"
-            pathPrefix="tecnologiaAutomacoes"
-            fields={[
-              { name: "nivelGeral", label: "Avalie seu nível geral (1-5)", ...sliderProps },
-            ]}
-            cardClassName="border-inclusive-yellow/30"
-            headerClassName="bg-inclusive-yellow/5"
-            titleClassName="text-inclusive-yellow"
-          />
         </CardContent>
       </Card>
     </div>

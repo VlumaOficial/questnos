@@ -20,7 +20,7 @@ export const questionnaireSchema = z.object({
       gestaoMudancaOrganizacional: sliderSchema,
       comunicacaoRebranding: sliderSchema,
     }),
-    nivelGeral: sliderSchema, // Adicionando nivelGeral aqui para consistência, embora não estivesse no esquema original para esta seção.
+    // nivelGeral removido
   }),
 
   // 2. COPYWRITING
@@ -40,7 +40,7 @@ export const questionnaireSchema = z.object({
       copyRedesSociais: sliderSchema,
       salesPages: sliderSchema,
     }),
-    nivelGeral: sliderSchema,
+    // nivelGeral removido
   }),
 
   // 3. REDAÇÃO
@@ -60,7 +60,7 @@ export const questionnaireSchema = z.object({
       revisaoEdicaoTextos: sliderSchema,
       gramaticaOrtografiaPtBr: sliderSchema,
     }),
-    nivelGeral: sliderSchema,
+    // nivelGeral removido
   }),
 
   // 4. ARTE & DESIGN
@@ -89,7 +89,7 @@ export const questionnaireSchema = z.object({
       embalagens: sliderSchema,
       identidadeVisualCompleta: sliderSchema,
     }),
-    nivelGeral: sliderSchema,
+    // nivelGeral removido
   }),
 
   // 5. MÍDIA SOCIAL (SOCIAL MEDIA)
@@ -118,7 +118,7 @@ export const questionnaireSchema = z.object({
       laterPlanable: sliderSchema,
       analiseNativaPlataformas: sliderSchema,
     }),
-    nivelGeral: sliderSchema,
+    // nivelGeral removido
   }),
 
   // 6. LANDING PAGES
@@ -148,7 +148,7 @@ export const questionnaireSchema = z.object({
       crm: sliderSchema,
       ferramentasAutomacao: sliderSchema,
     }),
-    nivelGeral: sliderSchema,
+    // nivelGeral removido
   }),
 
   // 7. PUBLICIDADE
@@ -175,7 +175,7 @@ export const questionnaireSchema = z.object({
       videoAds: sliderSchema,
       carouselColecoes: sliderSchema,
     }),
-    nivelGeral: sliderSchema,
+    // nivelGeral removido
   }),
 
   // 8. MARKETING
@@ -211,7 +211,7 @@ export const questionnaireSchema = z.object({
       activeCampaign: sliderSchema,
       zapierMake: sliderSchema,
     }),
-    nivelGeral: sliderSchema,
+    // nivelGeral removido
   }),
 
   // 9. TECNOLOGIA & AUTOMAÇÕES
@@ -383,7 +383,7 @@ export const questionnaireSchema = z.object({
       planoDisasterRecovery: sliderSchema,
       cloudBackup: sliderSchema,
     }),
-    nivelGeral: sliderSchema,
+    // nivelGeral removido
   }),
 
   // 10. HABILIDADES COMPLEMENTARES
@@ -408,7 +408,7 @@ export const questionnaireSchema = z.object({
       audioPodcast: sliderSchema,
       nocoesProgramacao: sliderSchema,
     }),
-    nivelGeral: sliderSchema,
+    // nivelGeral removido
   }),
 
   // 11. SOFT SKILLS (Já eram sliders, mas garantindo o schema)
@@ -423,7 +423,7 @@ export const questionnaireSchema = z.object({
     atencaoAosDetalhes: sliderSchema,
     sensoDeUrgencia: sliderSchema,
     capacidadeAnalitica: sliderSchema,
-    nivelGeral: sliderSchema,
+    // nivelGeral removido
   }),
 });
 

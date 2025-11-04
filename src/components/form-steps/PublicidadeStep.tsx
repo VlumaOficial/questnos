@@ -62,17 +62,6 @@ const PublicidadeStep: React.FC = () => {
             headerClassName="bg-inclusive-blue/5"
             titleClassName="text-inclusive-blue"
           />
-
-          <FormSection
-            title="Nível geral em Publicidade"
-            pathPrefix="publicidade"
-            fields={[
-              { name: "nivelGeral", label: "Avalie seu nível geral (1-5)", ...sliderProps },
-            ]}
-            cardClassName="border-inclusive-blue/30"
-            headerClassName="bg-inclusive-blue/5"
-            titleClassName="text-inclusive-blue"
-          />
         </CardContent>
       </Card>
     </div>

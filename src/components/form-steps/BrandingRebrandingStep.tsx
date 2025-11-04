@@ -47,17 +47,6 @@ const BrandingRebrandingStep: React.FC = () => {
             headerClassName="bg-inclusive-purple/5"
             titleClassName="text-inclusive-purple"
           />
-          
-          <FormSection
-            title="Nível geral em Branding & Rebranding"
-            pathPrefix="brandingRebranding"
-            fields={[
-              { name: "nivelGeral", label: "Avalie seu nível geral (1-5)", ...sliderProps },
-            ]}
-            cardClassName="border-inclusive-purple/30"
-            headerClassName="bg-inclusive-purple/5"
-            titleClassName="text-inclusive-purple"
-          />
         </CardContent>
       </Card>
     </div>

@@ -47,17 +47,6 @@ const CopywritingStep: React.FC = () => {
             headerClassName="bg-inclusive-orange/5"
             titleClassName="text-inclusive-orange"
           />
-
-          <FormSection
-            title="Nível geral em Copywriting"
-            pathPrefix="copywriting"
-            fields={[
-              { name: "nivelGeral", label: "Avalie seu nível geral (1-5)", ...sliderProps },
-            ]}
-            cardClassName="border-inclusive-orange/30"
-            headerClassName="bg-inclusive-orange/5"
-            titleClassName="text-inclusive-orange"
-          />
         </CardContent>
       </Card>
     </div>
