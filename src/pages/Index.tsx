@@ -1,4 +1,3 @@
-import { MadeWithDyad } from "@/components/made-with-dyad";
 import MultiStepQuestionnaire from "@/components/MultiStepQuestionnaire";
 import CandidateForm from "@/components/CandidateForm";
 import React, { useState } from "react";
@@ -17,7 +16,6 @@ const Index = () => {
       ) : (
         <MultiStepQuestionnaire />
       )}
-      <MadeWithDyad />
     </div>
   );
 };
