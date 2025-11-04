@@ -1,13 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { QuestionnaireSchema } from "@/schemas/questionnaireSchema";
-import { ChevronRight } from "lucide-react";
+import { ChevronDown, ChevronRight, Pencil } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
 interface SummaryStepProps {
-  onNavigateToStep: (stepIndex: number) => void;
+  onNavigateToStep: (stepIndex: number, isReviewing: boolean) => void;
 }
 
 const formatKey = (key: string) => {
@@ -15,7 +21,8 @@ const formatKey = (key: string) => {
   return key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase());
 };
 
-const renderData = (data: any, level: number = 0) => {
+// Componente recursivo para renderizar os dados e torná-los clicáveis
+const RenderData: React.FC<{ data: any, level: number, stepIndex: number, onNavigate: (stepIndex: number) => void }> = ({ data, level, stepIndex, onNavigate }) => {
   if (!data || typeof data !== 'object') return null;
 
   return Object.entries(data).map(([key, value]) => {
@@ -30,19 +37,29 @@ const renderData = (data: any, level: number = 0) => {
           <h4 className={`font-semibold ${level === 0 ? 'text-base text-inclusive-orange' : 'text-sm text-inclusive-blue/90'}`}>
             {formattedKey}
           </h4>
-          {renderData(value, level + 1)}
+          <RenderData data={value} level={level + 1} stepIndex={stepIndex} onNavigate={onNavigate} />
         </div>
       );
     } else if (isNumber) {
-      // Renderiza campos de slider (1-5)
+      // Renderiza campos de slider (1-5) como itens clicáveis para navegação
       const displayValue = value;
       const valueClass = "font-bold text-inclusive-blue";
       
       return (
-        <p key={key} className={`text-sm text-foreground mt-1 flex justify-between items-center ${level > 0 ? 'ml-2' : ''}`}>
-          <span className="font-medium text-muted-foreground">{formattedKey}:</span>{" "}
-          <span className={valueClass}>{displayValue}</span>
-        </p>
+        <div 
+          key={key} 
+          className={cn(
+            "text-sm text-foreground mt-1 flex justify-between items-center p-2 rounded-md cursor-pointer transition-colors hover:bg-inclusive-blue/10 group",
+            level > 0 ? 'ml-2' : ''
+          )}
+          onClick={() => onNavigate(stepIndex)}
+        >
+          <span className="font-medium text-muted-foreground group-hover:text-foreground">{formattedKey}:</span>{" "}
+          <span className="flex items-center space-x-2">
+            <span className={valueClass}>{displayValue}</span>
+            <Pencil className="h-3 w-3 text-inclusive-blue opacity-0 group-hover:opacity-100 transition-opacity" />
+          </span>
+        </div>
       );
     }
     return null;
@@ -52,6 +69,7 @@ const renderData = (data: any, level: number = 0) => {
 const SummaryStep: React.FC<SummaryStepProps> = ({ onNavigateToStep }) => {
   const { getValues } = useFormContext<QuestionnaireSchema>();
   const formData = getValues();
+  const [openSection, setOpenSection] = useState<string | undefined>(undefined);
 
   const sections = [
     { title: "1. Branding & Rebranding", key: "brandingRebranding", stepIndex: 0 },
@@ -67,6 +85,11 @@ const SummaryStep: React.FC<SummaryStepProps> = ({ onNavigateToStep }) => {
     { title: "11. Soft Skills", key: "softSkills", stepIndex: 10 },
   ];
 
+  const handleNavigate = (stepIndex: number) => {
+    // Navega para a etapa de edição e ativa o modo de revisão
+    onNavigateToStep(stepIndex, true);
+  };
+
   return (
     <div className="space-y-6">
       <Card className="w-full max-w-2xl shadow-lg border-inclusive-blue">
@@ -79,34 +102,42 @@ const SummaryStep: React.FC<SummaryStepProps> = ({ onNavigateToStep }) => {
           </p>
           <div className="mt-4 p-3 bg-inclusive-orange/10 rounded-md border border-inclusive-orange/50">
             <p className="text-sm font-semibold text-inclusive-orange">
-              ⚠️ Atenção: Antes de clicar em "Finalizar Questionário", verifique cuidadosamente todas as suas respostas. Utilize o botão "Voltar" abaixo para fazer qualquer ajuste necessário.
+              ⚠️ Atenção: Clique no título da seção para expandir e ver suas respostas. Clique em qualquer resposta para retornar à edição.
             </p>
           </div>
         </CardHeader>
         <CardContent className="pt-6 space-y-4">
-          {sections.map(section => (
-            <div 
-              key={section.key} 
-              className={cn(
-                "p-4 border rounded-lg bg-muted/20 border-inclusive-purple/30 cursor-pointer transition-colors hover:bg-muted/50",
-              )}
-              onClick={() => onNavigateToStep(section.stepIndex)}
-            >
-              <div className="flex justify-between items-center border-b pb-2 mb-3">
-                <h3 className="text-xl font-bold text-inclusive-purple">
-                  {section.title}
-                </h3>
-                <Button variant="ghost" size="icon" className="h-8 w-8 text-inclusive-purple hover:bg-inclusive-purple/10">
-                    <ChevronRight className="h-5 w-5" />
-                </Button>
-              </div>
-              
-              {/* Exibição resumida dos dados da seção */}
-              <div className="space-y-1">
-                {renderData(formData[section.key as keyof QuestionnaireSchema])}
-              </div>
-            </div>
-          ))}
+          <Accordion 
+            type="single" 
+            collapsible 
+            className="w-full"
+            value={openSection}
+            onValueChange={(value) => setOpenSection(value === openSection ? undefined : value)}
+          >
+            {sections.map(section => (
+              <AccordionItem 
+                key={section.key} 
+                value={section.key}
+                className="border rounded-lg bg-muted/20 border-inclusive-purple/30 mb-4"
+              >
+                <AccordionTrigger className="p-4 hover:no-underline">
+                  <h3 className="text-xl font-bold text-inclusive-purple">
+                    {section.title}
+                  </h3>
+                </AccordionTrigger>
+                <AccordionContent className="p-4 pt-0">
+                  <div className="space-y-1">
+                    <RenderData 
+                      data={formData[section.key as keyof QuestionnaireSchema]} 
+                      level={0} 
+                      stepIndex={section.stepIndex}
+                      onNavigate={handleNavigate}
+                    />
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
         </CardContent>
       </Card>
     </div>

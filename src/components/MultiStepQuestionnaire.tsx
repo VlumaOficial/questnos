@@ -284,6 +284,9 @@ const defaultValues: QuestionnaireSchema = {
 
 const MultiStepQuestionnaire: React.FC = () => {
   const [currentStep, setCurrentStep] = useState(0);
+  // Novo estado para rastrear se estamos no modo de revisão
+  const [isReviewing, setIsReviewing] = useState(false); 
+  
   const methods = useForm<QuestionnaireSchema>({
     resolver: zodResolver(questionnaireSchema),
     defaultValues: defaultValues,
@@ -292,27 +295,34 @@ const MultiStepQuestionnaire: React.FC = () => {
   const totalSteps = steps.length;
   const progress = ((currentStep + 1) / totalSteps) * 100;
 
-  const handleNavigateToStep = (stepIndex: number) => {
+  // Função de navegação que define se estamos revisando
+  const handleNavigateToStep = (stepIndex: number, reviewMode: boolean) => {
     setCurrentStep(stepIndex);
+    setIsReviewing(reviewMode);
   };
 
   const handleNext = async () => {
     const currentStepId = steps[currentStep].id;
     
-    // Se for o passo de resumo, não precisamos validar, apenas submeter
+    // Se for o passo de resumo, submete
     if (currentStepId === "summary") {
       methods.handleSubmit(onSubmit)();
       return;
     }
 
-    // Validação deve ser feita apenas no nível superior da seção atual
+    // Validação da etapa atual
     const isValid = await methods.trigger(currentStepId as keyof QuestionnaireSchema, { shouldFocus: true });
 
     if (isValid) {
-      if (currentStep < totalSteps - 1) {
+      if (isReviewing) {
+        // Se estiver revisando, volta diretamente para o resumo (última etapa)
+        setCurrentStep(totalSteps - 1);
+        setIsReviewing(false); // Desativa o modo de revisão após o retorno
+      } else if (currentStep < totalSteps - 1) {
+        // Se não estiver revisando, avança normalmente
         setCurrentStep((prev) => prev + 1);
       } else {
-        // Isso não deve ser alcançado se o SummaryStep for o último, mas mantemos por segurança
+        // Última etapa sequencial antes do resumo (se houver)
         methods.handleSubmit(onSubmit)();
       }
     } else {
@@ -327,6 +337,10 @@ const MultiStepQuestionnaire: React.FC = () => {
   const handleBack = () => {
     if (currentStep > 0) {
       setCurrentStep((prev) => prev - 1);
+      // Se voltar do resumo, desativa o modo de revisão
+      if (currentStep === totalSteps - 1) {
+        setIsReviewing(false);
+      }
     }
   };
 
@@ -376,7 +390,7 @@ const MultiStepQuestionnaire: React.FC = () => {
             onClick={handleNext}
             className="ml-auto bg-inclusive-orange text-inclusive-orange-foreground hover:bg-inclusive-orange/90"
           >
-            {currentStep === totalSteps - 1 ? "Finalizar Questionário" : "Próximo"}
+            {currentStep === totalSteps - 1 ? "Finalizar Questionário" : (isReviewing ? "Voltar ao Resumo" : "Próximo")}
           </Button>
         </div>
       </form>
