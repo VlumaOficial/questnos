@@ -13,7 +13,7 @@ const renderData = (data: any, level: number = 0) => {
 
   return Object.entries(data).map(([key, value]) => {
     const formattedKey = formatKey(key);
-    const isNestedObject = typeof value === "object" && value !== null && !Array.isArray(value);
+    const isNestedObject = typeof value === "object" && value !== null && !Array<any>(value);
     const isNumber = typeof value === "number";
 
     if (isNestedObject) {
@@ -70,6 +70,11 @@ const SummaryStep: React.FC = () => {
           <p className="text-muted-foreground mt-2 font-medium text-lg">
             Revise o questionário preenchido e, em caso de revisão, retorne à questão desejada.
           </p>
+          <div className="mt-4 p-3 bg-inclusive-orange/10 rounded-md border border-inclusive-orange/50">
+            <p className="text-sm font-semibold text-inclusive-orange">
+              ⚠️ Atenção: Antes de clicar em "Finalizar Questionário", verifique cuidadosamente todas as suas respostas. Utilize o botão "Voltar" abaixo para fazer qualquer ajuste necessário.
+            </p>
+          </div>
         </CardHeader>
         <CardContent className="pt-6 space-y-6">
           {sections.map(section => (
