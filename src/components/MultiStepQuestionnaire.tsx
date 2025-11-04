@@ -292,16 +292,27 @@ const MultiStepQuestionnaire: React.FC = () => {
   const totalSteps = steps.length;
   const progress = ((currentStep + 1) / totalSteps) * 100;
 
+  const handleNavigateToStep = (stepIndex: number) => {
+    setCurrentStep(stepIndex);
+  };
+
   const handleNext = async () => {
     const currentStepId = steps[currentStep].id;
-    // A validação deve ser feita apenas no nível superior da seção atual
+    
+    // Se for o passo de resumo, não precisamos validar, apenas submeter
+    if (currentStepId === "summary") {
+      methods.handleSubmit(onSubmit)();
+      return;
+    }
+
+    // Validação deve ser feita apenas no nível superior da seção atual
     const isValid = await methods.trigger(currentStepId as keyof QuestionnaireSchema, { shouldFocus: true });
 
     if (isValid) {
       if (currentStep < totalSteps - 1) {
         setCurrentStep((prev) => prev + 1);
       } else {
-        // This is the final step (Summary), so submit the form
+        // Isso não deve ser alcançado se o SummaryStep for o último, mas mantemos por segurança
         methods.handleSubmit(onSubmit)();
       }
     } else {
@@ -342,7 +353,12 @@ const MultiStepQuestionnaire: React.FC = () => {
           Etapa {currentStep + 1} de {totalSteps}: {steps[currentStep].name}
         </div>
 
-        <CurrentStepComponent />
+        {/* Renderiza o componente do passo atual, passando a função de navegação se for o SummaryStep */}
+        {steps[currentStep].id === "summary" ? (
+          <SummaryStep onNavigateToStep={handleNavigateToStep} />
+        ) : (
+          <CurrentStepComponent />
+        )}
 
         <div className="flex justify-between mt-6">
           {currentStep > 0 && (
