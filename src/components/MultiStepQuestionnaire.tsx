@@ -375,7 +375,7 @@ const MultiStepQuestionnaire: React.FC = () => {
         )}
 
         <div className="flex justify-between mt-6">
-          {currentStep > 0 && (
+          {currentStep > 0 && currentStep !== totalSteps - 1 && (
             <Button
               type="button"
               onClick={handleBack}
