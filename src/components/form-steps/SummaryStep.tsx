@@ -67,8 +67,8 @@ const SummaryStep: React.FC = () => {
           <CardTitle className="text-3xl font-bold text-inclusive-purple">
             Resumo do Questionário
           </CardTitle>
-          <p className="text-muted-foreground mt-2">
-            Revise suas respostas antes de finalizar.
+          <p className="text-muted-foreground mt-2 font-medium text-lg">
+            Revise o questionário preenchido e, em caso de revisão, retorne à questão desejada.
           </p>
         </CardHeader>
         <CardContent className="pt-6 space-y-6">
@@ -80,18 +80,6 @@ const SummaryStep: React.FC = () => {
               {renderData(formData[section.key as keyof QuestionnaireSchema])}
             </div>
           ))}
-
-          <div className="mt-8 p-4 bg-inclusive-yellow/10 rounded-md border border-inclusive-orange">
-            <h2 className="text-xl font-semibold text-inclusive-blue mb-3">Instruções de Avaliação</h2>
-            <p className="text-muted-foreground mb-2">Você avaliou cada habilidade de 1 a 5:</p>
-            <ul className="list-disc list-inside text-muted-foreground space-y-1">
-              <li><strong className="text-inclusive-blue">1</strong> - Sem conhecimento</li>
-              <li><strong className="text-inclusive-blue">2</strong> - Conhecimento básico</li>
-              <li><strong className="text-inclusive-blue">3</strong> - Conhecimento intermediário</li>
-              <li><strong className="text-inclusive-blue">4</strong> - Conhecimento avançado</li>
-              <li><strong className="text-inclusive-blue">5</strong> - Especialista/Expert</li>
-            </ul>
-          </div>
         </CardContent>
       </Card>
     </div>
