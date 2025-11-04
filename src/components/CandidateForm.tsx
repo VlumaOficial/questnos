@@ -64,12 +64,12 @@ const CandidateForm = () => {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-background p-4">
-      <Card className="w-full max-w-2xl shadow-lg">
-        <CardHeader className="text-center">
-          <CardTitle className="text-3xl font-bold text-primary">Questionário de Candidato</CardTitle>
+      <Card className="w-full max-w-2xl shadow-lg border-inclusive-blue"> {/* Adicionando borda azul */}
+        <CardHeader className="text-center bg-inclusive-purple/10"> {/* Fundo lilás suave */}
+          <CardTitle className="text-3xl font-bold text-inclusive-purple">Questionário de Candidato</CardTitle> {/* Título lilás */}
           <p className="text-muted-foreground mt-2">Por favor, preencha suas informações e leia as instruções.</p>
         </CardHeader>
-        <CardContent>
+        <CardContent className="pt-6">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
               <FormField
@@ -138,19 +138,19 @@ const CandidateForm = () => {
                 )}
               />
               
-              <div className="mt-8 p-4 bg-muted rounded-md border border-border">
-                <h2 className="text-xl font-semibold text-primary mb-3">Instruções de Avaliação</h2>
+              <div className="mt-8 p-4 bg-inclusive-yellow/10 rounded-md border border-inclusive-orange"> {/* Fundo amarelo suave, borda laranja */}
+                <h2 className="text-xl font-semibold text-inclusive-blue mb-3">Instruções de Avaliação</h2> {/* Título azul */}
                 <p className="text-muted-foreground mb-2">Avalie cada habilidade de 1 a 5:</p>
                 <ul className="list-disc list-inside text-muted-foreground space-y-1">
-                  <li><strong className="text-foreground">1</strong> - Sem conhecimento</li>
-                  <li><strong className="text-foreground">2</strong> - Conhecimento básico</li>
-                  <li><strong className="text-foreground">3</strong> - Conhecimento intermediário</li>
-                  <li><strong className="text-foreground">4</strong> - Conhecimento avançado</li>
-                  <li><strong className="text-foreground">5</strong> - Especialista/Expert</li>
+                  <li><strong className="text-inclusive-blue">1</strong> - Sem conhecimento</li>
+                  <li><strong className="text-inclusive-blue">2</strong> - Conhecimento básico</li>
+                  <li><strong className="text-inclusive-blue">3</strong> - Conhecimento intermediário</li>
+                  <li><strong className="text-inclusive-blue">4</strong> - Conhecimento avançado</li>
+                  <li><strong className="text-inclusive-blue">5</strong> - Especialista/Expert</li>
                 </ul>
               </div>
 
-              <Button type="submit" className="w-full bg-primary text-primary-foreground hover:bg-primary/90">
+              <Button type="submit" className="w-full bg-inclusive-orange text-inclusive-orange-foreground hover:bg-inclusive-orange/90"> {/* Botão laranja */}
                 Continuar
               </Button>
             </form>

@@ -62,6 +62,23 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        // Novas cores inclusivas
+        "inclusive-purple": {
+          DEFAULT: "hsl(var(--inclusive-purple))",
+          foreground: "hsl(var(--background))", // Usar foreground do background para contraste
+        },
+        "inclusive-orange": {
+          DEFAULT: "hsl(var(--inclusive-orange))",
+          foreground: "hsl(var(--background))",
+        },
+        "inclusive-yellow": {
+          DEFAULT: "hsl(var(--inclusive-yellow))",
+          foreground: "hsl(var(--foreground))", // Usar foreground padrão para contraste
+        },
+        "inclusive-blue": {
+          DEFAULT: "hsl(var(--inclusive-blue))",
+          foreground: "hsl(var(--background))",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
