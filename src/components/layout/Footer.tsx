@@ -86,6 +86,10 @@ export function Footer() {
                 src="/vluma-logo.svg" 
                 alt="Vluma" 
                 className="h-6 w-auto opacity-70 group-hover:opacity-100 transition-opacity"
+                onError={(e) => {
+                  const target = e.target as HTMLImageElement;
+                  target.style.display = 'none';
+                }}
               />
               <span className="font-semibold">Vluma</span>
             </a>
