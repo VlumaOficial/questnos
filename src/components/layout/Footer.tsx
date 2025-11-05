@@ -83,13 +83,9 @@ export function Footer() {
               className="flex items-center gap-2 hover:text-foreground transition-colors group"
             >
               <img 
-                src="/vluma-logo.svg" 
+                src="/logo.png" 
                 alt="Vluma" 
                 className="h-6 w-auto opacity-70 group-hover:opacity-100 transition-opacity"
-                onError={(e) => {
-                  const target = e.target as HTMLImageElement;
-                  target.style.display = 'none';
-                }}
               />
               <span className="font-semibold">Vluma</span>
             </a>
