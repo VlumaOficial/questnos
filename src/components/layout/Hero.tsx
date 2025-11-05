@@ -21,7 +21,7 @@ export function Hero({ onStartJourney }: HeroProps) {
           <div className="flex justify-center">
             <Badge variant="secondary" className="px-4 py-2 text-sm font-medium bg-gradient-to-r from-purple-100 to-blue-100 text-purple-800 border-purple-200 dark:from-purple-900/30 dark:to-blue-900/30 dark:text-purple-300 dark:border-purple-700">
               <Sparkles className="w-4 h-4 mr-2" />
-              Plataforma Inclusiva de Avaliação
+              Plataforma Inclusiva de Mapeamento
             </Badge>
           </div>
 

@@ -99,7 +99,7 @@ const Index = () => {
               <div className="text-center mb-8">
                 <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-100 to-blue-100 dark:from-purple-900/30 dark:to-blue-900/30 rounded-full mb-4">
                   <span className="text-sm font-medium text-purple-800 dark:text-purple-300">
-                    ✨ Avaliação Personalizada
+                    ✨ Mapeamento Personalizado
                   </span>
                 </div>
                 <h1 className="text-3xl md:text-4xl font-bold mb-4">

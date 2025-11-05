@@ -146,7 +146,7 @@ const CandidateForm: React.FC<CandidateFormProps> = ({ onFormSubmitSuccess }) =>
               />
               
               <div className="mt-8 p-4 bg-inclusive-yellow/10 rounded-md border border-inclusive-orange">
-                <h2 className="text-xl font-semibold text-inclusive-blue mb-3">Instruções de Avaliação</h2>
+                <h2 className="text-xl font-semibold text-inclusive-blue mb-3">Instruções de Mapeamento</h2>
                 <p className="text-muted-foreground mb-2">Você avaliará cada habilidade de 1 a 5:</p>
                 <ul className="list-disc list-inside text-muted-foreground space-y-1">
                   <li><strong className="text-inclusive-blue">1</strong> - Sem conhecimento</li>

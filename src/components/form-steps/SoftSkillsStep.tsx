@@ -18,7 +18,7 @@ const SoftSkillsStep: React.FC = () => {
         </CardHeader>
         <CardContent className="pt-6 space-y-6">
           <FormSection
-            title="Avaliação de Soft Skills"
+            title="Mapeamento de Soft Skills"
             pathPrefix="softSkills"
             fields={[
               { name: "criatividade", label: "Criatividade", ...sliderProps },

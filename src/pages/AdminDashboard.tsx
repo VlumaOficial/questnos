@@ -251,7 +251,7 @@ export default function AdminDashboard() {
                   Desempenho por Matéria
                 </CardTitle>
                 <CardDescription>
-                  Análise do desempenho dos candidatos em cada área de avaliação
+                  Análise do desempenho dos candidatos em cada área de mapeamento
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -528,7 +528,7 @@ export default function AdminDashboard() {
                         >
                           <div>
                             <div className="font-medium">
-                              Avaliação #{assessment.id.slice(0, 8)}
+                              Mapeamento #{assessment.id.slice(0, 8)}
                             </div>
                             <div className="text-sm text-muted-foreground">
                               Iniciada em: {formatDate(assessment.started_at)}
@@ -556,7 +556,7 @@ export default function AdminDashboard() {
                     </div>
                   ) : (
                     <div className="text-center py-8 text-muted-foreground">
-                      Nenhuma avaliação encontrada
+                      Nenhum mapeamento encontrado
                     </div>
                   )}
                 </CardContent>
