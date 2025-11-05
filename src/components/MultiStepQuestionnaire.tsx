@@ -51,7 +51,7 @@ interface MultiStepQuestionnaireProps {
     yearsOfExperience: number;
   };
   onBack?: () => void;
-  onSuccess?: () => void;
+  onSuccess?: (candidateId: string) => void;
 }
 
 // Gerando valores padrão baseados no esquema atualizado
@@ -405,13 +405,13 @@ const MultiStepQuestionnaire: React.FC<MultiStepQuestionnaireProps> = ({ candida
       
       // Mostrar mensagem adicional de agradecimento
       setTimeout(() => {
-        showSuccess("✨ Redirecionando para a página inicial...");
+        showSuccess("✨ Agora você pode compartilhar mais sobre você!");
       }, 1500);
       
       // Aguardar um pouco para o usuário ver as mensagens, depois redirecionar
       setTimeout(() => {
         if (onSuccess) {
-          onSuccess();
+          onSuccess(candidate.id);
         }
       }, 3000); // 3 segundos total para ler as mensagens
       
