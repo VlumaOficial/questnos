@@ -7,9 +7,9 @@ export default defineConfig(({ mode }) => {
   // Carrega variáveis de ambiente do .env.local e outros arquivos .env
   const env = loadEnv(mode, process.cwd(), '');
   
-  // Valores padrão para produção (Vercel)
-  const supabaseUrl = env.VITE_SUPABASE_URL || 'https://pnkmjewkbzymrztzutck.supabase.co';
-  const supabaseAnonKey = env.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBua21qZXdrYnp5bXJ6dHp1dGNrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjIyODU4NzIsImV4cCI6MjA3Nzg2MTg3Mn0.q3HjvJnEjS1jgA0cMnjtFBVGb7STMOWZb48PQ3I_kTM';
+  // Para produção, o Vite automaticamente carrega .env.production
+  const supabaseUrl = env.VITE_SUPABASE_URL;
+  const supabaseAnonKey = env.VITE_SUPABASE_ANON_KEY;
   
   return {
     server: {
