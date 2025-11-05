@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { toast } from "@/components/ui/use-toast";
 import { questionnaireSchema, QuestionnaireSchema } from "@/schemas/questionnaireSchema";
-import { createClient } from "@/integrations/supabase/client";
+import { supabase } from "@/integrations/supabase/client"; // Importação corrigida
 import { showSuccess, showError, showLoading, dismissToast } from "@/utils/toast";
 
 // Import all step components
@@ -275,7 +275,6 @@ const defaultValues: QuestionnaireSchema = {
   },
 };
 
-const supabase = createClient();
 
 const MultiStepQuestionnaire: React.FC<MultiStepQuestionnaireProps> = ({ candidateInfo }) => {
   const [currentStep, setCurrentStep] = useState(0);
