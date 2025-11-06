@@ -334,7 +334,7 @@ export class AssessmentService {
     // Mapear para incluir o nome da matéria (simplificado)
     return data?.map(answer => ({
       ...answer,
-      subject_name: 'Geral' // Temporário para debug
+      subject_name: 'Competências Gerais' // Nome fixo por enquanto
     })) || [];
   }
 
