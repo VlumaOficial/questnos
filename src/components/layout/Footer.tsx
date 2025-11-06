@@ -5,6 +5,7 @@ import TermsModal from "@/components/TermsModal";
 
 export function Footer() {
   const [showHowItWorksModal, setShowHowItWorksModal] = useState(false);
+  const [showPrivacyModal, setShowPrivacyModal] = useState(false);
 
   return (
     <footer className="bg-muted/30 border-t border-border/50 mt-20">
@@ -37,9 +38,12 @@ export function Footer() {
               >
                 Como funciona
               </button>
-              <a href="#" className="block text-muted-foreground hover:text-foreground transition-colors">
+              <button
+                onClick={() => setShowPrivacyModal(true)}
+                className="block text-muted-foreground hover:text-foreground transition-colors text-left"
+              >
                 Privacidade
-              </a>
+              </button>
             </div>
           </div>
 
@@ -102,11 +106,16 @@ export function Footer() {
         </div>
       </div>
 
-      {/* Modal Como Funciona */}
+      {/* Modais */}
       <TermsModal
         isOpen={showHowItWorksModal}
         onClose={() => setShowHowItWorksModal(false)}
         type="how-it-works"
+      />
+      <TermsModal
+        isOpen={showPrivacyModal}
+        onClose={() => setShowPrivacyModal(false)}
+        type="privacy"
       />
     </footer>
   );
