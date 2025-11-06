@@ -405,6 +405,24 @@ const MultiStepQuestionnaire: React.FC<MultiStepQuestionnaireProps> = ({ candida
       console.log('🚨 DEBUG - Total de questões processadas:', answers.length);
       console.log('🚨 DEBUG - Primeiras 5 questões:', answers.slice(0, 5));
       console.log('🚨 DEBUG - Últimas 5 questões:', answers.slice(-5));
+      
+      // Debug detalhado para encontrar questões faltantes
+      console.log('🔍 DEBUG - Estrutura completa dos dados:', JSON.stringify(data, null, 2));
+      
+      // Contar questões por seção
+      const questionsBySection: Record<string, number> = {};
+      answers.forEach(answer => {
+        const section = answer.question_text.split(':')[0];
+        questionsBySection[section] = (questionsBySection[section] || 0) + 1;
+      });
+      console.log('📊 DEBUG - Questões por seção:', questionsBySection);
+      
+      // Verificar se alguma seção está vazia
+      Object.keys(data).forEach(sectionKey => {
+        if (!questionsBySection[sectionKey]) {
+          console.log('⚠️ DEBUG - Seção sem questões processadas:', sectionKey, data[sectionKey]);
+        }
+      });
 
       // 3. Submeter avaliação
       const assessmentData: AssessmentSubmission = {
