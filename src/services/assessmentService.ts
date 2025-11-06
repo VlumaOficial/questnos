@@ -398,30 +398,6 @@ export class AssessmentService {
     });
   }
 
-  /**
-   * Respostas detalhadas de uma avaliação
-   */
-  static async getAssessmentAnswers(assessmentId: string): Promise<AssessmentAnswer[]> {
-    const { data, error } = await supabase
-      .from('assessment_answers')
-      .select(`
-        *,
-        subjects (
-          name,
-          description,
-          weight
-        )
-      `)
-      .eq('assessment_id', assessmentId)
-      .order('question_number');
-
-    if (error) {
-      console.error('Erro ao buscar respostas:', error);
-      throw new Error(`Erro ao buscar respostas: ${error.message}`);
-    }
-
-    return data || [];
-  }
 
   /**
    * Estatísticas gerais do sistema com retry e diagnóstico
