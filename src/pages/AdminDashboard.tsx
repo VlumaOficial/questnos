@@ -259,10 +259,9 @@ export default function AdminDashboard() {
 
         {/* Main Content */}
         <Tabs defaultValue="candidates" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-3">
+          <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="candidates">Candidatos</TabsTrigger>
             <TabsTrigger value="performance">Desempenho por Matéria</TabsTrigger>
-            <TabsTrigger value="insights">Insights Avançados</TabsTrigger>
           </TabsList>
 
           {/* Candidatos Tab */}
@@ -416,91 +415,6 @@ export default function AdminDashboard() {
                   candidateName={selectedCandidateForPerformanceData?.full_name}
                 />
               )}
-            </div>
-          </TabsContent>
-
-          {/* Insights Tab */}
-          <TabsContent value="insights">
-            <div className="grid gap-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <TrendingUp className="w-5 h-5" />
-                    Insights Avançados
-                  </CardTitle>
-                  <CardDescription>
-                    Análises detalhadas e tendências do sistema
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-6">
-                    {/* Resumo Geral */}
-                    <div className="p-4 bg-muted/30 rounded-lg">
-                      <h3 className="font-semibold mb-2">📊 Resumo Geral</h3>
-                      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-                        <div>
-                          <div className="text-muted-foreground">Candidatos Ativos</div>
-                          <div className="font-bold text-lg">{stats?.total_candidates || 0}</div>
-                        </div>
-                        <div>
-                          <div className="text-muted-foreground">Taxa de Sucesso</div>
-                          <div className="font-bold text-lg text-green-600">
-                            {stats?.completion_rate || 0}%
-                          </div>
-                        </div>
-                        <div>
-                          <div className="text-muted-foreground">Avaliações/Dia</div>
-                          <div className="font-bold text-lg">
-                            {Math.round((stats?.total_assessments || 0) / 30)}
-                          </div>
-                        </div>
-                        <div>
-                          <div className="text-muted-foreground">Eficiência</div>
-                          <div className="font-bold text-lg text-blue-600">Alta</div>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Recomendações */}
-                    <div className="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-                      <h3 className="font-semibold mb-2 text-blue-800 dark:text-blue-200">
-                        💡 Recomendações
-                      </h3>
-                      <ul className="space-y-2 text-sm text-blue-700 dark:text-blue-300">
-                        <li>• Considere adicionar mais questões nas matérias com menor taxa de acerto</li>
-                        <li>• Implemente feedback personalizado baseado no desempenho por matéria</li>
-                        <li>• Crie relatórios automáticos semanais para acompanhar tendências</li>
-                        <li>• Desenvolva um sistema de badges para motivar os candidatos</li>
-                      </ul>
-                    </div>
-
-                    {/* Status do Sistema */}
-                    <div className="p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
-                      <h3 className="font-semibold mb-2 text-green-800 dark:text-green-200">
-                        ✅ Status do Sistema
-                      </h3>
-                      <div className="grid grid-cols-2 gap-4 text-sm">
-                        <div className="flex items-center gap-2">
-                          <CheckCircle className="w-4 h-4 text-green-600" />
-                          <span>Banco de dados operacional</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <CheckCircle className="w-4 h-4 text-green-600" />
-                          <span>APIs funcionando normalmente</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <CheckCircle className="w-4 h-4 text-green-600" />
-                          <span>Backup automático ativo</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <CheckCircle className="w-4 h-4 text-green-600" />
-                          <span>Monitoramento em tempo real</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
             </div>
           </TabsContent>
         </Tabs>
