@@ -95,6 +95,7 @@ export function useAssessmentAnswers(assessmentId: string) {
     queryKey: ['assessment', 'answers', assessmentId],
     queryFn: () => AssessmentService.getAssessmentAnswers(assessmentId),
     enabled: !!assessmentId,
+    staleTime: 5 * 60 * 1000, // Cache por 5 minutos
   });
 }
 
