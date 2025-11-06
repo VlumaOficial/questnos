@@ -1,4 +1,4 @@
-import { Users, Heart, Sparkles } from "lucide-react";
+import { Users, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 
@@ -42,10 +42,7 @@ export function Header() {
 
           {/* CTA */}
           <div className="flex items-center gap-2">
-            <Button variant="outline" size="sm" className="hidden sm:flex">
-              <Heart className="w-4 h-4 mr-2" />
-              Apoiar
-            </Button>
+            {/* Espaço reservado para futuras ações */}
           </div>
         </div>
       </div>

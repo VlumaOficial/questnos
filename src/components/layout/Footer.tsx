@@ -57,9 +57,6 @@ export function Footer() {
               <a href="#" className="block text-muted-foreground hover:text-foreground transition-colors">
                 Suporte
               </a>
-              <a href="#" className="block text-muted-foreground hover:text-foreground transition-colors">
-                Contribuir
-              </a>
             </div>
           </div>
 
