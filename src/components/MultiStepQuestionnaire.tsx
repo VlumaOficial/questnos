@@ -380,6 +380,8 @@ const MultiStepQuestionnaire: React.FC<MultiStepQuestionnaireProps> = ({ candida
               const subjectName = mapSectionToSubject(sectionKey);
               const subject = subjects?.find(s => s.name === subjectName);
               
+              console.log(`🔍 Processando questão: ${currentPath.join(' → ')} = ${value} (Seção: ${sectionKey}, Matéria: ${subjectName})`);
+              
               if (subject) {
                 answers.push({
                   subject_id: subject.id,
@@ -390,10 +392,15 @@ const MultiStepQuestionnaire: React.FC<MultiStepQuestionnaireProps> = ({ candida
                   is_correct: value > 0,
                   time_spent_seconds: 30 // Estimativa
                 });
+              } else {
+                console.warn(`⚠️ Matéria não encontrada para seção: ${sectionKey} → ${subjectName}`);
               }
             } else if (typeof value === 'object' && value !== null) {
               // É um objeto, continuar recursivamente
+              console.log(`📁 Entrando em subseção: ${currentPath.join(' → ')}`);
               processSection(value, currentPath);
+            } else {
+              console.log(`❓ Valor ignorado (não é número nem objeto): ${currentPath.join(' → ')} = ${value} (tipo: ${typeof value})`);
             }
           });
         }
