@@ -368,8 +368,6 @@ const MultiStepQuestionnaire: React.FC<MultiStepQuestionnaireProps> = ({ candida
       const answers: QuestionnaireAnswer[] = [];
       let questionNumber = 1;
 
-      console.log('🚀 INICIANDO PROCESSAMENTO - questionNumber inicial:', questionNumber);
-
       // Função recursiva para processar todos os níveis da estrutura
       const processSection = (data: any, sectionPath: string[] = []) => {
         if (typeof data === 'object' && data !== null) {
@@ -382,29 +380,20 @@ const MultiStepQuestionnaire: React.FC<MultiStepQuestionnaireProps> = ({ candida
               const subjectName = mapSectionToSubject(sectionKey);
               const subject = subjects?.find(s => s.name === subjectName);
               
-              console.log(`🔍 Processando questão ${questionNumber}: ${currentPath.join(' → ')} = ${value} (Seção: ${sectionKey}, Matéria: ${subjectName})`);
-              
               if (subject) {
                 answers.push({
                   subject_id: subject.id,
-                  question_number: questionNumber,
+                  question_number: questionNumber++,
                   question_text: currentPath.join(': '),
                   answer_value: String(value),
                   answer_score: value,
                   is_correct: value > 0,
                   time_spent_seconds: 30 // Estimativa
                 });
-                questionNumber++; // Incrementar APÓS adicionar
-                console.log(`✅ Questão adicionada! Próximo número: ${questionNumber}`);
-              } else {
-                console.warn(`⚠️ Matéria não encontrada para seção: ${sectionKey} → ${subjectName}`);
               }
             } else if (typeof value === 'object' && value !== null) {
               // É um objeto, continuar recursivamente
-              console.log(`📁 Entrando em subseção: ${currentPath.join(' → ')}`);
               processSection(value, currentPath);
-            } else {
-              console.log(`❓ Valor ignorado (não é número nem objeto): ${currentPath.join(' → ')} = ${value} (tipo: ${typeof value})`);
             }
           });
         }
@@ -413,29 +402,7 @@ const MultiStepQuestionnaire: React.FC<MultiStepQuestionnaireProps> = ({ candida
       // Processar todas as seções recursivamente
       processSection(data);
 
-      console.log('🚨 DEBUG - Total de questões processadas:', answers.length);
-      console.log('🚨 DEBUG - questionNumber final:', questionNumber);
-      console.log('🚨 DEBUG - Diferença (questionNumber - 1 vs answers.length):', (questionNumber - 1), 'vs', answers.length);
-      console.log('🚨 DEBUG - Primeiras 5 questões:', answers.slice(0, 5));
-      console.log('🚨 DEBUG - Últimas 5 questões:', answers.slice(-5));
-      
-      // Debug detalhado para encontrar questões faltantes
-      console.log('🔍 DEBUG - Estrutura completa dos dados:', JSON.stringify(data, null, 2));
-      
-      // Contar questões por seção
-      const questionsBySection: Record<string, number> = {};
-      answers.forEach(answer => {
-        const section = answer.question_text.split(':')[0];
-        questionsBySection[section] = (questionsBySection[section] || 0) + 1;
-      });
-      console.log('📊 DEBUG - Questões por seção:', questionsBySection);
-      
-      // Verificar se alguma seção está vazia
-      Object.keys(data).forEach(sectionKey => {
-        if (!questionsBySection[sectionKey]) {
-          console.log('⚠️ DEBUG - Seção sem questões processadas:', sectionKey, data[sectionKey]);
-        }
-      });
+      console.log('✅ Questionário processado com sucesso:', answers.length, 'questões');
 
       // 3. Submeter avaliação
       const assessmentData: AssessmentSubmission = {
