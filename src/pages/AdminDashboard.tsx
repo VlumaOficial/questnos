@@ -54,10 +54,20 @@ export default function AdminDashboard() {
     });
   };
 
+  // Função para converter pontuação em classificação
+  const getClassification = (score: number) => {
+    if (score >= 81) return { level: 5, label: "Especialista/Expert", color: "bg-purple-100 text-purple-800 border-purple-200" };
+    if (score >= 61) return { level: 4, label: "Conhecimento avançado", color: "bg-green-100 text-green-800 border-green-200" };
+    if (score >= 41) return { level: 3, label: "Conhecimento intermediário", color: "bg-blue-100 text-blue-800 border-blue-200" };
+    if (score >= 21) return { level: 2, label: "Conhecimento básico", color: "bg-yellow-100 text-yellow-800 border-yellow-200" };
+    return { level: 1, label: "Sem conhecimento", color: "bg-red-100 text-red-800 border-red-200" };
+  };
+
   const getScoreColor = (score: number) => {
-    if (score >= 80) return 'text-green-600 bg-green-100 dark:bg-green-900/30';
-    if (score >= 60) return 'text-yellow-600 bg-yellow-100 dark:bg-yellow-900/30';
-    return 'text-red-600 bg-red-100 dark:bg-red-900/30';
+    if (score >= 80) return "bg-green-100 text-green-800 border-green-200";
+    if (score >= 60) return "bg-blue-100 text-blue-800 border-blue-200";
+    if (score >= 40) return "bg-yellow-100 text-yellow-800 border-yellow-200";
+    return "bg-red-100 text-red-800 border-red-200";
   };
 
   return (
@@ -211,12 +221,17 @@ export default function AdminDashboard() {
                         
                         <div className="flex items-center gap-3">
                           {candidate.avg_score && candidate.avg_score > 0 ? (
-                            <Badge className={getScoreColor(candidate.avg_score)}>
-                              {candidate.avg_score.toFixed(1)}%
-                            </Badge>
+                            <div className="flex flex-col items-end gap-1">
+                              <Badge className={getClassification(candidate.avg_score).color}>
+                                Nível {getClassification(candidate.avg_score).level}
+                              </Badge>
+                              <span className="text-xs text-muted-foreground">
+                                {getClassification(candidate.avg_score).label}
+                              </span>
+                            </div>
                           ) : (
                             <Badge variant="secondary">
-                              Sem avaliações
+                              Sem mapeamentos
                             </Badge>
                           )}
                           <Button 
