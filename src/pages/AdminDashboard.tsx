@@ -77,13 +77,14 @@ export default function AdminDashboard() {
     });
   };
 
-  // Função para converter pontuação em classificação
-  const getClassification = (score: number) => {
-    if (score >= 81) return { level: 5, label: "Especialista/Expert", color: "bg-purple-100 text-purple-800 border-purple-200" };
-    if (score >= 61) return { level: 4, label: "Conhecimento avançado", color: "bg-green-100 text-green-800 border-green-200" };
-    if (score >= 41) return { level: 3, label: "Conhecimento intermediário", color: "bg-blue-100 text-blue-800 border-blue-200" };
-    if (score >= 21) return { level: 2, label: "Conhecimento básico", color: "bg-yellow-100 text-yellow-800 border-yellow-200" };
-    return { level: 1, label: "Sem conhecimento", color: "bg-red-100 text-red-800 border-red-200" };
+  // Função para converter média das respostas em classificação por nível
+  const getClassification = (avgScore: number) => {
+    // Nova classificação baseada na média das respostas (1-5)
+    if (avgScore >= 5.0) return { level: 5, label: "Nível 5 - Especialista", color: "bg-purple-100 text-purple-800 border-purple-200" };
+    if (avgScore >= 4.0) return { level: 4, label: "Nível 4 - Avançado", color: "bg-green-100 text-green-800 border-green-200" };
+    if (avgScore >= 3.0) return { level: 3, label: "Nível 3 - Intermediário", color: "bg-blue-100 text-blue-800 border-blue-200" };
+    if (avgScore >= 2.0) return { level: 2, label: "Nível 2 - Básico", color: "bg-yellow-100 text-yellow-800 border-yellow-200" };
+    return { level: 1, label: "Nível 1 - Iniciante", color: "bg-red-100 text-red-800 border-red-200" };
   };
 
   const getScoreColor = (score: number) => {
