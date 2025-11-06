@@ -28,6 +28,7 @@ export interface SubjectPerformance {
 
 /**
  * Extrai o valor de uma questão específica do objeto de respostas
+ * IMPORTANTE: Retorna 1 (mínimo) se não encontrar resposta, pois não existe zero no questionário
  */
 function getQuestionValue(answers: any[], questionPath: string): number {
   // Procurar pela resposta que corresponde ao caminho da questão
@@ -44,7 +45,8 @@ function getQuestionValue(answers: any[], questionPath: string): number {
            normalizedPath.includes(normalizedQuestionText);
   });
 
-  return answer?.answer_score || 0;
+  // Retorna 1 (mínimo do questionário) se não encontrar resposta
+  return answer?.answer_score || 1;
 }
 
 /**
@@ -90,7 +92,7 @@ function calculateSkillPerformance(
   const totalScore = subSkillsPerformance.reduce((sum, sp) => sum + sp.score, 0);
   const avgScore = subSkillsPerformance.length > 0 
     ? totalScore / subSkillsPerformance.length 
-    : 0;
+    : 1; // Mínimo é 1, não existe zero
 
   return {
     skill,
@@ -114,7 +116,7 @@ export function calculateSubjectPerformance(
   const totalScore = skillsPerformance.reduce((sum, sp) => sum + sp.avgScore, 0);
   const avgScore = skillsPerformance.length > 0 
     ? totalScore / skillsPerformance.length 
-    : 0;
+    : 1; // Mínimo é 1, não existe zero
 
   return {
     subject,
@@ -143,7 +145,7 @@ export function calculateOverallPerformance(answers: any[]): number {
   const totalScore = subjectsPerformance.reduce((sum, sp) => sum + sp.avgScore, 0);
   const avgScore = subjectsPerformance.length > 0 
     ? totalScore / subjectsPerformance.length 
-    : 0;
+    : 1; // Mínimo é 1, não existe zero
 
   return avgScore;
 }
