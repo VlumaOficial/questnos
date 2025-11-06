@@ -33,6 +33,7 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import AssessmentAnswersModal from "@/components/AssessmentAnswersModal";
 import SubjectPerformanceModule from "@/components/SubjectPerformanceModule";
+import CandidateCombobox from "@/components/CandidateCombobox";
 import { calculateAllSubjectsPerformance } from "@/utils/performanceCalculations";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/lib/supabase";
@@ -380,31 +381,20 @@ export default function AdminDashboard() {
           {/* Performance por Matéria Tab */}
           <TabsContent value="performance">
             <div className="space-y-4">
-              {/* Filtro por Candidato */}
+              {/* Seletor de Candidato com Pesquisa */}
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-sm">Filtrar por Candidato</CardTitle>
+                  <CardTitle className="text-sm">Selecionar Candidato</CardTitle>
+                  <CardDescription>
+                    Escolha um candidato para ver o desempenho individual ou visualize todos
+                  </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <div className="flex gap-2 flex-wrap">
-                    <Button
-                      variant={selectedCandidateForPerformance === null ? 'default' : 'outline'}
-                      size="sm"
-                      onClick={() => setSelectedCandidateForPerformance(null)}
-                    >
-                      Visão Geral (Todos)
-                    </Button>
-                    {candidates?.map((candidate) => (
-                      <Button
-                        key={candidate.id}
-                        variant={selectedCandidateForPerformance === candidate.id ? 'default' : 'outline'}
-                        size="sm"
-                        onClick={() => setSelectedCandidateForPerformance(candidate.id)}
-                      >
-                        {candidate.full_name}
-                      </Button>
-                    ))}
-                  </div>
+                  <CandidateCombobox
+                    candidates={candidates || []}
+                    selectedCandidateId={selectedCandidateForPerformance}
+                    onSelectCandidate={setSelectedCandidateForPerformance}
+                  />
                 </CardContent>
               </Card>
 
