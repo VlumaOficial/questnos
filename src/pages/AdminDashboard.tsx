@@ -562,6 +562,12 @@ export default function AdminDashboard() {
                             >
                               {assessment.status === 'completed' ? 'Completa' : 'Em Andamento'}
                             </Badge>
+                            <Badge 
+                              variant={assessment.is_retake ? 'destructive' : 'outline'}
+                              className={assessment.is_retake ? 'bg-orange-100 text-orange-800 border-orange-200' : 'bg-green-100 text-green-800 border-green-200'}
+                            >
+                              {assessment.is_retake ? 'Refeito' : 'Novo'}
+                            </Badge>
                             {assessment.percentage_score && (
                               <Badge className={getClassification(assessment.percentage_score).color}>
                                 Nível {getClassification(assessment.percentage_score).level}

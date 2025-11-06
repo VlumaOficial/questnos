@@ -316,14 +316,11 @@ export class AssessmentService {
    * Buscar respostas de um assessment específico
    */
   static async getAssessmentAnswers(assessmentId: string) {
+    console.log('🔧 DEBUG - Buscando respostas para assessment:', assessmentId);
+    
     const { data, error } = await supabase
       .from('assessment_answers')
-      .select(`
-        *,
-        subjects:subject_id (
-          name
-        )
-      `)
+      .select('*')
       .eq('assessment_id', assessmentId)
       .order('question_number', { ascending: true });
 
@@ -332,10 +329,12 @@ export class AssessmentService {
       throw new Error(`Erro ao buscar respostas: ${error.message}`);
     }
 
-    // Mapear para incluir o nome da matéria
+    console.log('🔧 DEBUG - Respostas encontradas:', data?.length || 0);
+    
+    // Mapear para incluir o nome da matéria (simplificado)
     return data?.map(answer => ({
       ...answer,
-      subject_name: answer.subjects?.name || 'Geral'
+      subject_name: 'Geral' // Temporário para debug
     })) || [];
   }
 
