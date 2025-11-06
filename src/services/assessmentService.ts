@@ -327,26 +327,48 @@ export class AssessmentService {
     
     console.log('🔧 DEBUG - Assessment encontrado:', assessment);
     
-    // Buscar todas as respostas (query simples - tabela questions não existe)
+    // Buscar todas as respostas com nomes das matérias
     const { data, error } = await supabase
       .from('assessment_answers')
-      .select('*')
+      .select(`
+        *,
+        subjects (
+          name
+        )
+      `)
       .eq('assessment_id', assessmentId)
       .order('question_number', { ascending: true });
 
     if (error) {
-      console.error('❌ Erro ao buscar respostas do assessment:', error);
-      throw new Error(`Erro ao buscar respostas: ${error.message}`);
+      console.error('❌ Erro ao buscar respostas com subjects:', error);
+      
+      // Fallback: query simples sem JOIN
+      const { data: simpleData, error: simpleError } = await supabase
+        .from('assessment_answers')
+        .select('*')
+        .eq('assessment_id', assessmentId)
+        .order('question_number', { ascending: true });
+        
+      if (simpleError) {
+        throw new Error(`Erro ao buscar respostas: ${simpleError.message}`);
+      }
+      
+      console.log('🔧 DEBUG - Fallback - Respostas encontradas:', simpleData?.length || 0);
+      
+      return simpleData?.map(answer => ({
+        ...answer,
+        subject_name: 'Competências Gerais',
+        question_text: answer.question_text || `Questão ${answer.question_number}`
+      })) || [];
     }
 
     console.log('🔧 DEBUG - Respostas encontradas:', data?.length || 0);
     console.log('🔧 DEBUG - Primeira resposta:', data?.[0]);
-    console.log('🔧 DEBUG - Todas as respostas:', data);
     
-    // Mapear respostas com dados básicos
+    // Mapear respostas com nomes reais das matérias
     return data?.map(answer => ({
       ...answer,
-      subject_name: 'Competências Gerais',
+      subject_name: answer.subjects?.name || 'Competências Gerais',
       question_text: answer.question_text || `Questão ${answer.question_number}`
     })) || [];
   }
