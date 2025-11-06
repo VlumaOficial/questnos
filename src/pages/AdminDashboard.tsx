@@ -26,7 +26,8 @@ import {
   Mail,
   Phone,
   GraduationCap,
-  Calendar
+  Calendar,
+  RotateCcw
 } from "lucide-react";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
@@ -35,6 +36,7 @@ import AssessmentAnswersModal from "@/components/AssessmentAnswersModal";
 export default function AdminDashboard() {
   const [selectedCandidate, setSelectedCandidate] = useState<string | null>(null);
   const [selectedAssessment, setSelectedAssessment] = useState<string | null>(null);
+  const [activeFilter, setActiveFilter] = useState<'all' | 'completed' | 'incomplete' | 'retakes'>('all');
   
   // Queries
   const { data: candidates, isLoading: loadingCandidates } = useAllCandidates();
@@ -45,6 +47,25 @@ export default function AdminDashboard() {
 
   // Encontrar candidato selecionado
   const selectedCandidateData = candidates?.find(c => c.id === selectedCandidate);
+
+  // Calcular estatísticas detalhadas
+  const candidatesWithCompleted = candidates?.filter(c => c.completed_assessments > 0) || [];
+  const candidatesWithIncomplete = candidates?.filter(c => c.total_assessments > c.completed_assessments) || [];
+  const candidatesWithRetakes = candidates?.filter(c => c.assessment_count > 1) || [];
+  
+  // Filtrar candidatos baseado no filtro ativo
+  const filteredCandidates = candidates?.filter(candidate => {
+    switch (activeFilter) {
+      case 'completed':
+        return candidate.completed_assessments > 0;
+      case 'incomplete':
+        return candidate.total_assessments > candidate.completed_assessments;
+      case 'retakes':
+        return candidate.assessment_count > 1;
+      default:
+        return true;
+    }
+  }) || [];
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('pt-BR', {
@@ -105,79 +126,91 @@ export default function AdminDashboard() {
           </div>
         </div>
 
-        {/* Stats Cards */}
+        {/* Stats Cards - Clicáveis */}
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-5">
-          <Card>
+          <Card 
+            className={`cursor-pointer transition-all hover:shadow-lg ${activeFilter === 'all' ? 'ring-2 ring-blue-500' : ''}`}
+            onClick={() => setActiveFilter('all')}
+          >
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Total de Candidatos</CardTitle>
               <Users className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">
-                {loadingStats ? '...' : stats?.total_candidates || 0}
-              </div>
-              <p className="text-xs text-muted-foreground">
-                Registros na plataforma
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Questionários</CardTitle>
-              <FileText className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">
-                {loadingStats ? '...' : stats?.total_assessments || 0}
-              </div>
-              <p className="text-xs text-muted-foreground">
-                Total de questionários
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total de Questões</CardTitle>
-              <GraduationCap className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
               <div className="text-2xl font-bold text-blue-600">
-                {loadingStats ? '...' : stats?.total_questions || 0}
+                {loadingCandidates ? '...' : candidates?.length || 0}
               </div>
               <p className="text-xs text-muted-foreground">
-                Questões ativas no banco
+                Clique para ver todos
               </p>
             </CardContent>
           </Card>
 
-          <Card>
+          <Card 
+            className={`cursor-pointer transition-all hover:shadow-lg ${activeFilter === 'completed' ? 'ring-2 ring-green-500' : ''}`}
+            onClick={() => setActiveFilter('completed')}
+          >
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Taxa de Conclusão</CardTitle>
+              <CardTitle className="text-sm font-medium">Questionários Completos</CardTitle>
+              <CheckCircle className="h-4 w-4 text-green-600" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-green-600">
+                {loadingCandidates ? '...' : candidatesWithCompleted.length}
+              </div>
+              <p className="text-xs text-muted-foreground">
+                Clique para filtrar
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card 
+            className={`cursor-pointer transition-all hover:shadow-lg ${activeFilter === 'retakes' ? 'ring-2 ring-orange-500' : ''}`}
+            onClick={() => setActiveFilter('retakes')}
+          >
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Questionários Refeitos</CardTitle>
+              <RotateCcw className="h-4 w-4 text-orange-600" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-orange-600">
+                {loadingCandidates ? '...' : candidatesWithRetakes.length}
+              </div>
+              <p className="text-xs text-muted-foreground">
+                Clique para filtrar
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card 
+            className={`cursor-pointer transition-all hover:shadow-lg ${activeFilter === 'incomplete' ? 'ring-2 ring-red-500' : ''}`}
+            onClick={() => setActiveFilter('incomplete')}
+          >
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Questionários Incompletos</CardTitle>
+              <Clock className="h-4 w-4 text-red-600" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-red-600">
+                {loadingCandidates ? '...' : candidatesWithIncomplete.length}
+              </div>
+              <p className="text-xs text-muted-foreground">
+                Clique para filtrar
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card className="cursor-pointer transition-all hover:shadow-lg">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">% de Conclusão</CardTitle>
               <TrendingUp className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">
+              <div className="text-2xl font-bold text-purple-600">
                 {loadingStats ? '...' : `${stats?.completion_rate || 0}%`}
               </div>
               <p className="text-xs text-muted-foreground">
-                Avaliações completadas
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Avaliações Completas</CardTitle>
-              <Award className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">
-                {loadingStats ? '...' : stats?.completed_assessments || 0}
-              </div>
-              <p className="text-xs text-muted-foreground">
-                Finalizadas com sucesso
+                Taxa geral de sucesso
               </p>
             </CardContent>
           </Card>
@@ -195,12 +228,34 @@ export default function AdminDashboard() {
           <TabsContent value="candidates">
             <Card>
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Users className="w-5 h-5" />
-                  Lista de Candidatos
+                <CardTitle className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <Users className="w-5 h-5" />
+                    Lista de Candidatos
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Badge variant="outline" className="text-xs">
+                      {filteredCandidates.length} de {candidates?.length || 0}
+                    </Badge>
+                    {activeFilter !== 'all' && (
+                      <Badge 
+                        variant="secondary" 
+                        className="text-xs cursor-pointer"
+                        onClick={() => setActiveFilter('all')}
+                      >
+                        {activeFilter === 'completed' && '✅ Completos'}
+                        {activeFilter === 'incomplete' && '⏳ Incompletos'}
+                        {activeFilter === 'retakes' && '🔄 Refeitos'}
+                        <X className="w-3 h-3 ml-1" />
+                      </Badge>
+                    )}
+                  </div>
                 </CardTitle>
                 <CardDescription>
-                  Visualize todos os candidatos e suas avaliações
+                  {activeFilter === 'all' && 'Visualize todos os candidatos e suas avaliações'}
+                  {activeFilter === 'completed' && 'Candidatos com questionários completos'}
+                  {activeFilter === 'incomplete' && 'Candidatos com questionários pendentes'}
+                  {activeFilter === 'retakes' && 'Candidatos que refizeram questionários'}
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -208,7 +263,7 @@ export default function AdminDashboard() {
                   <div className="text-center py-8">Carregando candidatos...</div>
                 ) : (
                   <div className="space-y-4">
-                    {candidates?.map((candidate) => (
+                    {filteredCandidates?.map((candidate) => (
                       <div 
                         key={candidate.id}
                         className="flex items-center justify-between p-4 border rounded-lg hover:bg-muted/50 transition-colors"
