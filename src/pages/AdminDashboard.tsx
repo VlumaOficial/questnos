@@ -222,20 +222,31 @@ export default function AdminDashboard() {
                         </div>
                         
                         <div className="flex items-center gap-3">
-                          {candidate.avg_score && candidate.avg_score > 0 ? (
-                            <div className="flex flex-col items-end gap-1">
-                              <Badge className={getClassification(candidate.avg_score).color}>
-                                Nível {getClassification(candidate.avg_score).level}
+                          <div className="flex flex-col items-end gap-1">
+                            {candidate.avg_score && candidate.avg_score > 0 ? (
+                              <>
+                                <Badge className={getClassification(candidate.avg_score).color}>
+                                  Nível {getClassification(candidate.avg_score).level}
+                                </Badge>
+                                <span className="text-xs text-muted-foreground">
+                                  {getClassification(candidate.avg_score).label}
+                                </span>
+                              </>
+                            ) : (
+                              <Badge variant="secondary">
+                                Sem mapeamentos
                               </Badge>
-                              <span className="text-xs text-muted-foreground">
-                                {getClassification(candidate.avg_score).label}
-                              </span>
+                            )}
+                            {/* Badge Novo/Refeito */}
+                            <div className="flex gap-1 mt-1">
+                              <Badge 
+                                variant="outline"
+                                className="text-xs bg-green-100 text-green-800 border-green-200"
+                              >
+                                {candidate.assessment_count > 1 ? `${candidate.assessment_count - 1} Refeito(s)` : 'Novo'}
+                              </Badge>
                             </div>
-                          ) : (
-                            <Badge variant="secondary">
-                              Sem mapeamentos
-                            </Badge>
-                          )}
+                          </div>
                           <Button 
                             variant="outline" 
                             size="sm"
