@@ -117,14 +117,6 @@ export function useSubjectPerformanceReport() {
   });
 }
 
-export function useAssessmentAnswers(assessmentId: string) {
-  return useQuery({
-    queryKey: ['assessment', 'answers', assessmentId],
-    queryFn: () => AssessmentService.getAssessmentAnswers(assessmentId),
-    enabled: !!assessmentId,
-  });
-}
-
 export function useSystemStats() {
   return useQuery({
     queryKey: ['system', 'stats'],
