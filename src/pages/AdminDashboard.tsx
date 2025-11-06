@@ -32,11 +32,16 @@ import {
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import AssessmentAnswersModal from "@/components/AssessmentAnswersModal";
+import SubjectPerformanceModule from "@/components/SubjectPerformanceModule";
+import { calculateAllSubjectsPerformance } from "@/utils/performanceCalculations";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/lib/supabase";
 
 export default function AdminDashboard() {
   const [selectedCandidate, setSelectedCandidate] = useState<string | null>(null);
   const [selectedAssessment, setSelectedAssessment] = useState<string | null>(null);
   const [activeFilter, setActiveFilter] = useState<'all' | 'completed' | 'incomplete' | 'retakes'>('all');
+  const [selectedCandidateForPerformance, setSelectedCandidateForPerformance] = useState<string | null>(null);
   
   // Queries
   const { data: candidates, isLoading: loadingCandidates } = useAllCandidates();
@@ -45,8 +50,39 @@ export default function AdminDashboard() {
   const { data: dbHealth } = useDatabaseHealth();
   const { data: candidateAssessments, isLoading: loadingAssessments } = useCandidateAssessments(selectedCandidate || '');
 
+  // Query para buscar todas as respostas dos assessments
+  const { data: allAnswers, isLoading: loadingAnswers } = useQuery({
+    queryKey: ['all-assessment-answers'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('assessment_answers')
+        .select('*')
+        .order('question_number');
+      
+      if (error) throw error;
+      return data || [];
+    },
+  });
+
+  // Calcular desempenho por matéria
+  const subjectsPerformanceData = allAnswers ? calculateAllSubjectsPerformance(allAnswers) : [];
+  
+  // Filtrar por candidato se selecionado
+  const filteredAnswers = selectedCandidateForPerformance && allAnswers
+    ? allAnswers.filter(a => {
+        // Buscar assessment_id do candidato
+        const candidateAssessmentIds = candidateAssessments?.map(ca => ca.id) || [];
+        return candidateAssessmentIds.includes(a.assessment_id);
+      })
+    : allAnswers || [];
+  
+  const filteredSubjectsPerformance = filteredAnswers.length > 0 
+    ? calculateAllSubjectsPerformance(filteredAnswers)
+    : [];
+
   // Encontrar candidato selecionado
   const selectedCandidateData = candidates?.find(c => c.id === selectedCandidate);
+  const selectedCandidateForPerformanceData = candidates?.find(c => c.id === selectedCandidateForPerformance);
 
   // Calcular estatísticas detalhadas
   const candidatesWithCompleted = candidates?.filter(c => c.completed_assessments > 0) || [];
@@ -343,78 +379,51 @@ export default function AdminDashboard() {
 
           {/* Performance por Matéria Tab */}
           <TabsContent value="performance">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <BarChart3 className="w-5 h-5" />
-                  Desempenho por Matéria
-                </CardTitle>
-                <CardDescription>
-                  Análise do desempenho dos candidatos em cada área de mapeamento
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                {loadingSubjects ? (
-                  <div className="text-center py-8">Carregando dados de desempenho...</div>
-                ) : (
-                  <div className="space-y-4">
-                    {subjectPerformance?.map((subject) => (
-                      <div 
-                        key={subject.subject_name}
-                        className="p-4 border rounded-lg"
+            <div className="space-y-4">
+              {/* Filtro por Candidato */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-sm">Filtrar por Candidato</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex gap-2 flex-wrap">
+                    <Button
+                      variant={selectedCandidateForPerformance === null ? 'default' : 'outline'}
+                      size="sm"
+                      onClick={() => setSelectedCandidateForPerformance(null)}
+                    >
+                      Visão Geral (Todos)
+                    </Button>
+                    {candidates?.map((candidate) => (
+                      <Button
+                        key={candidate.id}
+                        variant={selectedCandidateForPerformance === candidate.id ? 'default' : 'outline'}
+                        size="sm"
+                        onClick={() => setSelectedCandidateForPerformance(candidate.id)}
                       >
-                        <div className="flex items-center justify-between mb-3">
-                          <div>
-                            <h3 className="font-semibold">{subject.subject_name}</h3>
-                            <p className="text-sm text-muted-foreground">
-                              {subject.subject_description}
-                            </p>
-                          </div>
-                          <Badge className={getScoreColor(subject.success_rate_percentage)}>
-                            {subject.success_rate_percentage}% de acerto
-                          </Badge>
-                        </div>
-                        
-                        <div className="grid grid-cols-3 gap-4 text-sm">
-                          <div>
-                            <span className="text-muted-foreground">Total de Respostas:</span>
-                            <div className="font-semibold">{subject.total_answers}</div>
-                          </div>
-                          <div>
-                            <span className="text-muted-foreground">Respostas Corretas:</span>
-                            <div className="font-semibold text-green-600">
-                              {subject.correct_answers}
-                            </div>
-                          </div>
-                          <div>
-                            <span className="text-muted-foreground">Pontuação Média:</span>
-                            <div className="font-semibold">
-                              {subject.avg_score?.toFixed(1) || 'N/A'}
-                            </div>
-                          </div>
-                        </div>
-                        
-                        {/* Barra de progresso visual */}
-                        <div className="mt-3">
-                          <div className="w-full bg-muted rounded-full h-2">
-                            <div 
-                              className="bg-gradient-to-r from-purple-500 to-blue-500 h-2 rounded-full transition-all"
-                              style={{ width: `${subject.success_rate_percentage}%` }}
-                            />
-                          </div>
-                        </div>
-                      </div>
+                        {candidate.full_name}
+                      </Button>
                     ))}
-                    
-                    {subjectPerformance?.length === 0 && (
-                      <div className="text-center py-8 text-muted-foreground">
-                        Nenhum dado de desempenho disponível
-                      </div>
-                    )}
                   </div>
-                )}
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+
+              {/* Módulo de Desempenho */}
+              {loadingAnswers ? (
+                <Card>
+                  <CardContent className="py-12">
+                    <div className="text-center text-muted-foreground">
+                      Carregando dados de desempenho...
+                    </div>
+                  </CardContent>
+                </Card>
+              ) : (
+                <SubjectPerformanceModule
+                  subjectsPerformance={selectedCandidateForPerformance ? filteredSubjectsPerformance : subjectsPerformanceData}
+                  candidateName={selectedCandidateForPerformanceData?.full_name}
+                />
+              )}
+            </div>
           </TabsContent>
 
           {/* Insights Tab */}
