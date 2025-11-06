@@ -21,7 +21,9 @@ COMMENT ON COLUMN candidates.terms_acceptance_ip IS 'Endereço IP do aceite dos 
 CREATE INDEX IF NOT EXISTS idx_candidates_terms_accepted ON candidates(terms_accepted);
 CREATE INDEX IF NOT EXISTS idx_candidates_privacy_accepted ON candidates(privacy_policy_accepted);
 
--- Verificar estrutura atualizada
+-- Verificar estrutura atualizada (executar APÓS criar as colunas)
+-- Descomente a query abaixo após executar os ALTER TABLE acima
+/*
 SELECT 
     column_name,
     data_type,
@@ -32,3 +34,4 @@ WHERE table_schema = 'public'
 AND table_name = 'candidates'
 AND column_name IN ('terms_accepted', 'terms_accepted_at', 'privacy_policy_accepted', 'privacy_policy_accepted_at', 'terms_acceptance_ip')
 ORDER BY ordinal_position;
+*/
