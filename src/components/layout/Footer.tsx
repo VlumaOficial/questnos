@@ -38,9 +38,6 @@ export function Footer() {
                 Como funciona
               </button>
               <a href="#" className="block text-muted-foreground hover:text-foreground transition-colors">
-                Acessibilidade
-              </a>
-              <a href="#" className="block text-muted-foreground hover:text-foreground transition-colors">
                 Privacidade
               </a>
             </div>
