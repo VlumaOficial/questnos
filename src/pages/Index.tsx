@@ -97,17 +97,18 @@ const Index = () => {
             <div className="container mx-auto px-4 py-12">
               {/* Header do Questionário */}
               <div className="text-center mb-8">
-                <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-100 to-blue-100 dark:from-purple-900/30 dark:to-blue-900/30 rounded-full mb-4">
-                  <span className="text-sm font-medium text-purple-800 dark:text-purple-300">
-                    ✨ Mapeamento Personalizado
-                  </span>
-                </div>
+                <h2 className="text-2xl md:text-3xl font-bold mb-6 text-gradient-diversity">
+                  Conte sua história
+                </h2>
                 <h1 className="text-3xl md:text-4xl font-bold mb-4">
-                  <span className="text-gradient-diversity">Olá, {candidateInfo.name}!</span>
+                  Olá, {candidateInfo.name}
                 </h1>
+                <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-2">
+                  Estas perguntas nos ajudam a entender seu perfil profissional e conectar 
+                  você com oportunidades que façam sentido para você.
+                </p>
                 <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                  Agora vamos descobrir suas habilidades únicas através de uma jornada 
-                  personalizada e inclusiva.
+                  Relaxe, seja você mesmo e compartilhe suas experiências.
                 </p>
               </div>
 
