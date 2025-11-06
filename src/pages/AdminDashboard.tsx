@@ -27,7 +27,8 @@ import {
   Phone,
   GraduationCap,
   Calendar,
-  RotateCcw
+  RotateCcw,
+  Trash2
 } from "lucide-react";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
@@ -35,14 +36,19 @@ import AssessmentAnswersModal from "@/components/AssessmentAnswersModal";
 import SubjectPerformanceModule from "@/components/SubjectPerformanceModule";
 import CandidateCombobox from "@/components/CandidateCombobox";
 import { calculateAllSubjectsPerformance } from "@/utils/performanceCalculations";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/lib/supabase";
+import { AssessmentService } from "@/services/assessmentService";
+import { toast } from "sonner";
 
 export default function AdminDashboard() {
   const [selectedCandidate, setSelectedCandidate] = useState<string | null>(null);
   const [selectedAssessment, setSelectedAssessment] = useState<string | null>(null);
   const [activeFilter, setActiveFilter] = useState<'all' | 'completed' | 'incomplete' | 'retakes'>('all');
   const [selectedCandidateForPerformance, setSelectedCandidateForPerformance] = useState<string | null>(null);
+  const [deletingCandidate, setDeletingCandidate] = useState(false);
+  
+  const queryClient = useQueryClient();
   
   // Queries
   const { data: candidates, isLoading: loadingCandidates } = useAllCandidates();
@@ -132,6 +138,53 @@ export default function AdminDashboard() {
     if (score >= 60) return "bg-blue-100 text-blue-800 border-blue-200";
     if (score >= 40) return "bg-yellow-100 text-yellow-800 border-yellow-200";
     return "bg-red-100 text-red-800 border-red-200";
+  };
+
+  // Função para deletar candidato
+  const handleDeleteCandidate = async () => {
+    if (!selectedCandidateForPerformance) return;
+
+    const candidate = selectedCandidateForPerformanceData;
+    if (!candidate) return;
+
+    const confirmed = window.confirm(
+      `⚠️ ATENÇÃO: Esta ação é IRREVERSÍVEL!\n\n` +
+      `Você está prestes a deletar o candidato:\n` +
+      `Nome: ${candidate.full_name}\n` +
+      `Email: ${candidate.email}\n\n` +
+      `Isso irá remover PERMANENTEMENTE:\n` +
+      `• Todos os dados do candidato\n` +
+      `• Todos os assessments realizados\n` +
+      `• Todas as respostas do questionário\n\n` +
+      `Deseja realmente continuar?`
+    );
+
+    if (!confirmed) return;
+
+    setDeletingCandidate(true);
+    
+    try {
+      await AssessmentService.deleteCandidate(selectedCandidateForPerformance);
+      
+      // Invalidar queries para atualizar dados
+      queryClient.invalidateQueries({ queryKey: ['all-candidates'] });
+      queryClient.invalidateQueries({ queryKey: ['system-stats'] });
+      queryClient.invalidateQueries({ queryKey: ['all-assessment-answers'] });
+      
+      // Limpar seleção
+      setSelectedCandidateForPerformance(null);
+      
+      toast.success('Candidato deletado com sucesso!', {
+        description: `${candidate.full_name} e todos os dados relacionados foram removidos.`
+      });
+    } catch (error: any) {
+      console.error('Erro ao deletar candidato:', error);
+      toast.error('Erro ao deletar candidato', {
+        description: error.message || 'Ocorreu um erro ao tentar deletar o candidato.'
+      });
+    } finally {
+      setDeletingCandidate(false);
+    }
   };
 
   return (
@@ -386,7 +439,21 @@ export default function AdminDashboard() {
               {/* Seletor de Candidato com Pesquisa */}
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-sm">Selecionar Candidato</CardTitle>
+                  <CardTitle className="text-sm flex items-center justify-between">
+                    <span>Selecionar Candidato</span>
+                    {selectedCandidateForPerformance && (
+                      <Button
+                        variant="destructive"
+                        size="sm"
+                        onClick={handleDeleteCandidate}
+                        disabled={deletingCandidate}
+                        className="gap-2"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                        {deletingCandidate ? 'Excluindo...' : 'Excluir Candidato'}
+                      </Button>
+                    )}
+                  </CardTitle>
                   <CardDescription>
                     Escolha um candidato para ver o desempenho individual ou visualize todos
                   </CardDescription>

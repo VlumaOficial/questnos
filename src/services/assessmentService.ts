@@ -686,4 +686,56 @@ export class AssessmentService {
       return false;
     }
   }
+
+  /**
+   * Deleta um candidato e todos os dados relacionados
+   * IMPORTANTE: Esta operação é irreversível!
+   * Deleta em cascata:
+   * - Assessments do candidato
+   * - Assessment answers dos assessments
+   * - Candidate record
+   */
+  static async deleteCandidate(candidateId: string): Promise<void> {
+    try {
+      // 1. Buscar todos os assessments do candidato
+      const { data: assessments, error: assessmentsError } = await supabase
+        .from('assessments')
+        .select('id')
+        .eq('candidate_id', candidateId);
+
+      if (assessmentsError) throw assessmentsError;
+
+      // 2. Deletar todas as respostas dos assessments
+      if (assessments && assessments.length > 0) {
+        const assessmentIds = assessments.map(a => a.id);
+        
+        const { error: answersError } = await supabase
+          .from('assessment_answers')
+          .delete()
+          .in('assessment_id', assessmentIds);
+
+        if (answersError) throw answersError;
+      }
+
+      // 3. Deletar todos os assessments do candidato
+      const { error: deleteAssessmentsError } = await supabase
+        .from('assessments')
+        .delete()
+        .eq('candidate_id', candidateId);
+
+      if (deleteAssessmentsError) throw deleteAssessmentsError;
+
+      // 4. Deletar o candidato
+      const { error: deleteCandidateError } = await supabase
+        .from('candidates')
+        .delete()
+        .eq('id', candidateId);
+
+      if (deleteCandidateError) throw deleteCandidateError;
+
+    } catch (error: any) {
+      console.error('Erro ao deletar candidato:', error);
+      throw new Error(`Falha ao deletar candidato: ${error.message}`);
+    }
+  }
 }
