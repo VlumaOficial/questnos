@@ -19,8 +19,12 @@ import {
   Phone
 } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useClientConfig, getContactInfo } from "@/config/client";
 
 export default function About() {
+  const config = useClientConfig();
+  const contactInfo = getContactInfo();
+  
   return (
     <div className="min-h-screen bg-background">
       <Header />
@@ -36,11 +40,11 @@ export default function About() {
           </Link>
           
           <div className="text-center mb-12">
-            <h1 className="text-5xl font-bold mb-4 bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
-              Sobre a NÓS
+            <h1 className="text-5xl font-bold mb-4 text-gradient-brand">
+              Sobre a {config.company.name}
             </h1>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Somos uma agência de branding e comunicação que acredita no poder da diversidade e da inclusão.
+              {config.branding.description}
             </p>
           </div>
         </div>

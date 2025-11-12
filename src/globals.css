@@ -248,3 +248,79 @@
     transform: translateY(-3px);
   }
 }
+
+/* ============================================
+   🎯 VARIÁVEIS CSS DINÂMICAS PARA WHITE-LABEL
+   ============================================ */
+
+:root {
+  /* Cores personalizáveis do cliente */
+  --client-primary: #8B5CF6;
+  --client-secondary: #3B82F6;
+  --client-accent: #10B981;
+  
+  /* Aplicação das cores personalizadas */
+  --brand-primary: var(--client-primary);
+  --brand-secondary: var(--client-secondary);
+  --brand-accent: var(--client-accent);
+}
+
+/* Classes utilitárias para cores da marca */
+.bg-brand-primary {
+  background-color: var(--brand-primary);
+}
+
+.bg-brand-secondary {
+  background-color: var(--brand-secondary);
+}
+
+.bg-brand-accent {
+  background-color: var(--brand-accent);
+}
+
+.text-brand-primary {
+  color: var(--brand-primary);
+}
+
+.text-brand-secondary {
+  color: var(--brand-secondary);
+}
+
+.text-brand-accent {
+  color: var(--brand-accent);
+}
+
+.border-brand-primary {
+  border-color: var(--brand-primary);
+}
+
+.border-brand-secondary {
+  border-color: var(--brand-secondary);
+}
+
+.border-brand-accent {
+  border-color: var(--brand-accent);
+}
+
+/* Gradientes com cores da marca */
+.bg-gradient-brand {
+  background: linear-gradient(135deg, var(--brand-primary), var(--brand-secondary));
+}
+
+.text-gradient-brand {
+  background: linear-gradient(135deg, var(--brand-primary), var(--brand-secondary));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Hover states com cores da marca */
+.hover-brand-primary:hover {
+  background-color: var(--brand-primary);
+  color: white;
+}
+
+.hover-brand-secondary:hover {
+  background-color: var(--brand-secondary);
+  color: white;
+}

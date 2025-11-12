@@ -7,6 +7,8 @@ import Index from "./pages/Index";
 import About from "./pages/About";
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminLogin from "./pages/AdminLogin";
+import { AdminBranding } from "./pages/AdminBranding";
+import { AdminQuestionnaire } from "./pages/AdminQuestionnaire";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import NotFound from "./pages/NotFound";
 
@@ -27,6 +29,22 @@ const App = () => (
             element={
               <ProtectedRoute>
                 <AdminDashboard />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/admin/branding" 
+            element={
+              <ProtectedRoute>
+                <AdminBranding />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/admin/questionnaire" 
+            element={
+              <ProtectedRoute>
+                <AdminQuestionnaire />
               </ProtectedRoute>
             } 
           />

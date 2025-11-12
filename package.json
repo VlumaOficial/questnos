@@ -5,8 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
-    "build:dev": "vite build --mode development",
+    "build": "node scripts/generate-policies.js && vite build",
+    "build:dev": "node scripts/generate-policies.js && vite build --mode development",
+    "build:client": "node scripts/generate-policies.js && vite build --mode production",
+    "build:protected": "node scripts/build-protected.js",
+    "generate-policies": "node scripts/generate-policies.js",
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest",
