@@ -36,7 +36,7 @@ export function AdminBranding() {
     company_name: 'VLUMA RH',
     tagline: 'Onde a tecnologia encontra o humano no RH',
     description: 'Plataforma de RH com Inteligência Artificial da VLUMA. Automatize processos, humanize relacionamentos e transforme a gestão de pessoas da sua empresa.',
-    logo_url: '/logo.svg',
+    logo_url: '/vluma-logo.png',
     favicon_url: '/favicon.svg',
     primary_color: '#2563EB',
     secondary_color: '#1E40AF',

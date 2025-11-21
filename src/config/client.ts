@@ -54,7 +54,7 @@ export interface ClientConfig {
 export const CLIENT_CONFIG: ClientConfig = {
   company: {
     name: import.meta.env.VITE_COMPANY_NAME || 'VLUMA RH',
-    logo: import.meta.env.VITE_COMPANY_LOGO || '/logo.png',
+    logo: import.meta.env.VITE_COMPANY_LOGO || '/vluma-logo.png',
     favicon: import.meta.env.VITE_COMPANY_FAVICON || '/favicon.svg',
     colors: {
       primary: import.meta.env.VITE_PRIMARY_COLOR || '#2563EB',
