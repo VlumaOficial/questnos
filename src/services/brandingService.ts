@@ -275,9 +275,9 @@ class BrandingService {
       company_name: 'VLUMA RH',
       tagline: 'Onde a tecnologia encontra o humano no RH',
       description: 'Plataforma de RH com Inteligência Artificial da VLUMA. Automatize processos, humanize relacionamentos e transforme a gestão de pessoas da sua empresa.',
-      primary_color: '#2563EB',
-      secondary_color: '#1E40AF',
-      accent_color: '#3B82F6',
+      primary_color: '#1E3A8A',
+      secondary_color: '#7C3AED',
+      accent_color: '#60A5FA',
       hero_title: 'Transforme sua gestão de pessoas com IA',
       hero_subtitle: 'Automação inteligente e processos humanizados para revolucionar o RH da sua empresa.',
       enabled_features: {

@@ -57,9 +57,9 @@ export const CLIENT_CONFIG: ClientConfig = {
     logo: import.meta.env.VITE_COMPANY_LOGO || '/vluma-logo.png',
     favicon: import.meta.env.VITE_COMPANY_FAVICON || '/favicon.svg',
     colors: {
-      primary: import.meta.env.VITE_PRIMARY_COLOR || '#2563EB',
-      secondary: import.meta.env.VITE_SECONDARY_COLOR || '#1E40AF',
-      accent: import.meta.env.VITE_ACCENT_COLOR || '#3B82F6'
+      primary: import.meta.env.VITE_PRIMARY_COLOR || '#1E3A8A',
+      secondary: import.meta.env.VITE_SECONDARY_COLOR || '#7C3AED',
+      accent: import.meta.env.VITE_ACCENT_COLOR || '#60A5FA'
     },
     contact: {
       email: import.meta.env.VITE_CONTACT_EMAIL || 'contato@vluma.com.br',
