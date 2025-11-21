@@ -137,8 +137,8 @@ export function InclusiveColorGuide() {
         
         <div className="mt-6 p-4 bg-muted/30 rounded-lg">
           <p className="text-sm text-muted-foreground text-center">
-            <strong>Quest Nós</strong> abraça a diversidade em todas as suas formas. 
-            Cada cor em nossa paleta conta uma história de inclusão, respeito e celebração das diferenças humanas.
+            <strong>VLUMA RH</strong> abraça a diversidade em todas as suas formas. 
+            Cada cor em nossa paleta conta uma história de inclusão, respeito e celebração das diferenças humanas no ambiente corporativo.
           </p>
         </div>
       </CardContent>

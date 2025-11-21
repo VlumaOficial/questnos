@@ -272,14 +272,14 @@ class BrandingService {
    */
   async resetToDefault(): Promise<{ success: boolean; error?: string }> {
     const defaultConfig: Partial<BrandingConfig> = {
-      company_name: 'Quest Nós',
-      tagline: 'Recrutamento com Diversidade e Inclusão',
-      description: 'Conectamos talentos diversos com oportunidades únicas no mercado de trabalho.',
-      primary_color: '#3B82F6',
+      company_name: 'VLUMA RH',
+      tagline: 'Onde a tecnologia encontra o humano no RH',
+      description: 'Plataforma de RH com Inteligência Artificial da VLUMA. Automatize processos, humanize relacionamentos e transforme a gestão de pessoas da sua empresa.',
+      primary_color: '#2563EB',
       secondary_color: '#1E40AF',
-      accent_color: '#06B6D4',
-      hero_title: 'Encontre os melhores talentos',
-      hero_subtitle: 'Conectamos você com profissionais qualificados e diversos.',
+      accent_color: '#3B82F6',
+      hero_title: 'Transforme sua gestão de pessoas com IA',
+      hero_subtitle: 'Automação inteligente e processos humanizados para revolucionar o RH da sua empresa.',
       enabled_features: {
         questionnaire: true,
         admin: true,

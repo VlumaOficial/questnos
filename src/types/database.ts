@@ -1,4 +1,4 @@
-// Tipos para o banco de dados do Quest Nós
+// Tipos para o banco de dados do VLUMA RH
 
 export interface Candidate {
   id: string;

@@ -49,30 +49,30 @@ export interface ClientConfig {
 
 /**
  * Configuração principal do cliente
- * Usa variáveis de ambiente com fallbacks para Quest Nós
+ * Usa variáveis de ambiente com fallbacks para VLUMA RH
  */
 export const CLIENT_CONFIG: ClientConfig = {
   company: {
-    name: import.meta.env.VITE_COMPANY_NAME || 'Quest Nós',
+    name: import.meta.env.VITE_COMPANY_NAME || 'VLUMA RH',
     logo: import.meta.env.VITE_COMPANY_LOGO || '/logo.png',
     favicon: import.meta.env.VITE_COMPANY_FAVICON || '/favicon.svg',
     colors: {
-      primary: import.meta.env.VITE_PRIMARY_COLOR || '#8B5CF6',
-      secondary: import.meta.env.VITE_SECONDARY_COLOR || '#3B82F6',
-      accent: import.meta.env.VITE_ACCENT_COLOR || '#10B981'
+      primary: import.meta.env.VITE_PRIMARY_COLOR || '#2563EB',
+      secondary: import.meta.env.VITE_SECONDARY_COLOR || '#1E40AF',
+      accent: import.meta.env.VITE_ACCENT_COLOR || '#3B82F6'
     },
     contact: {
-      email: import.meta.env.VITE_CONTACT_EMAIL || 'contato@questnos.com',
+      email: import.meta.env.VITE_CONTACT_EMAIL || 'contato@vluma.com.br',
       phone: import.meta.env.VITE_CONTACT_PHONE || '(11) 0000-0000',
       address: import.meta.env.VITE_COMPANY_ADDRESS || 'São Paulo, SP',
-      website: import.meta.env.VITE_COMPANY_WEBSITE || 'questnos.com'
+      website: import.meta.env.VITE_COMPANY_WEBSITE || 'vluma.com.br'
     }
   },
   legal: {
     termsUrl: import.meta.env.VITE_TERMS_URL || '/termos-de-uso.md',
     privacyUrl: import.meta.env.VITE_PRIVACY_URL || '/politica-de-privacidade.md',
     companyDocument: import.meta.env.VITE_COMPANY_CNPJ || '00.000.000/0001-00',
-    companyName: import.meta.env.VITE_LEGAL_COMPANY_NAME || 'Quest Nós Ltda'
+    companyName: import.meta.env.VITE_LEGAL_COMPANY_NAME || 'VLUMA Tecnologia Ltda'
   },
   features: {
     questionnaire: import.meta.env.VITE_FEATURE_QUESTIONNAIRE !== 'false',
@@ -82,10 +82,10 @@ export const CLIENT_CONFIG: ClientConfig = {
     aboutPage: import.meta.env.VITE_FEATURE_ABOUT !== 'false'
   },
   branding: {
-    heroTitle: import.meta.env.VITE_HERO_TITLE || 'Conte sua história',
-    heroSubtitle: import.meta.env.VITE_HERO_SUBTITLE || 'Conectamos profissionais diversos e talentosos com projetos que fazem a diferença.',
-    tagline: import.meta.env.VITE_TAGLINE || 'Mapeamento de Habilidades com Diversidade e Inclusão',
-    description: import.meta.env.VITE_DESCRIPTION || 'Somos uma agência de branding e comunicação que acredita no poder da diversidade e da inclusão.'
+    heroTitle: import.meta.env.VITE_HERO_TITLE || 'Transforme sua gestão de pessoas com IA',
+    heroSubtitle: import.meta.env.VITE_HERO_SUBTITLE || 'Automação inteligente e processos humanizados para revolucionar o RH da sua empresa.',
+    tagline: import.meta.env.VITE_TAGLINE || 'Onde a tecnologia encontra o humano no RH',
+    description: import.meta.env.VITE_DESCRIPTION || 'Plataforma de RH com Inteligência Artificial da VLUMA. Automatize processos, humanize relacionamentos e transforme a gestão de pessoas da sua empresa.'
   }
 };
 
