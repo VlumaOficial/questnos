@@ -2,13 +2,23 @@ import { ArrowRight, Sparkles, Users, Brain, Zap, TrendingUp } from "lucide-reac
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useClientConfig } from "@/config/client";
+import { useNavigate } from "react-router-dom";
 
 interface HeroProps {
-  onStartJourney: () => void;
+  onStartJourney?: () => void;
 }
 
 export function Hero({ onStartJourney }: HeroProps) {
   const config = useClientConfig();
+  const navigate = useNavigate();
+
+  const handleStartJourney = () => {
+    if (onStartJourney) {
+      onStartJourney();
+    } else {
+      navigate('/login');
+    }
+  };
   
   return (
     <section className="relative py-20 px-4 overflow-hidden">
@@ -71,7 +81,7 @@ export function Hero({ onStartJourney }: HeroProps) {
           {/* CTA */}
           <div className="space-y-4">
             <Button 
-              onClick={onStartJourney}
+              onClick={handleStartJourney}
               size="lg" 
               className="bg-gradient-to-r from-orange-600 via-blue-600 to-orange-500 hover:from-orange-700 hover:via-blue-700 hover:to-orange-600 text-white px-8 py-6 text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
             >
