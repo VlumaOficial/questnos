@@ -85,7 +85,7 @@ const Index = () => {
             <div className="mb-8 text-center">
               <h2 className="text-3xl font-bold mb-4">Vamos nos conhecer!</h2>
               <p className="text-muted-foreground">
-                Conte-nos um pouco sobre você para personalizarmos sua experiência.
+                Conte-nos um pouco sobre você para personalizarmos sua avaliação de competências.
               </p>
             </div>
             <CandidateForm onFormSubmitSuccess={handleCandidateFormSubmit} />
@@ -97,18 +97,18 @@ const Index = () => {
             <div className="container mx-auto px-4 py-12">
               {/* Header do Questionário */}
               <div className="text-center mb-8">
-                <h2 className="text-2xl md:text-3xl font-bold mb-6 text-gradient-diversity">
-                  Conte sua história
+                <h2 className="text-2xl md:text-3xl font-bold mb-6 bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent">
+                  Avaliação de Competências
                 </h2>
                 <h1 className="text-3xl md:text-4xl font-bold mb-4">
                   Olá, {candidateInfo.name}
                 </h1>
                 <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-2">
-                  Estas perguntas nos ajudam a entender seu perfil profissional e conectar 
-                  você com oportunidades que façam sentido para você.
+                  Estas perguntas nos ajudam a mapear suas competências profissionais e 
+                  identificar seu perfil para oportunidades de crescimento.
                 </p>
                 <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                  Relaxe, seja você mesmo e compartilhe suas experiências.
+                  Responda com sinceridade para obtermos uma análise precisa do seu potencial.
                 </p>
               </div>
 
