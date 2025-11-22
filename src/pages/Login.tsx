@@ -8,7 +8,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { useClientConfig } from '@/config/client';
-import { Mail, Lock, ArrowRight, Users } from 'lucide-react';
+import { Mail, Lock, ArrowRight } from 'lucide-react';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -40,9 +40,9 @@ export default function Login() {
       // Simular autenticação (aqui você integraria com seu sistema de auth)
       await new Promise(resolve => setTimeout(resolve, 1000));
       
-      // Por enquanto, vamos redirecionar diretamente para a avaliação
-      // No futuro, aqui você faria a autenticação real
-      navigate('/assessment');
+      // Redirecionar para dashboard administrativo
+      // No futuro, aqui você faria a autenticação real com validação de perfil
+      navigate('/admin/dashboard');
     } catch (err) {
       setError('Erro ao fazer login. Tente novamente.');
     } finally {
@@ -50,10 +50,6 @@ export default function Login() {
     }
   };
 
-  const handleGuestAccess = () => {
-    // Permitir acesso como convidado
-    navigate('/assessment');
-  };
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
@@ -137,26 +133,6 @@ export default function Login() {
                   <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
               </form>
-
-              <div className="relative">
-                <div className="absolute inset-0 flex items-center">
-                  <span className="w-full border-t" />
-                </div>
-                <div className="relative flex justify-center text-xs uppercase">
-                  <span className="bg-background px-2 text-muted-foreground">
-                    Ou
-                  </span>
-                </div>
-              </div>
-
-              <Button 
-                variant="outline" 
-                className="w-full"
-                onClick={handleGuestAccess}
-              >
-                <Users className="w-4 h-4 mr-2" />
-                Continuar como Convidado
-              </Button>
 
               <div className="text-center text-sm text-muted-foreground">
                 <p>Não tem uma conta? Entre em contato conosco</p>

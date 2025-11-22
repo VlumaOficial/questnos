@@ -85,7 +85,7 @@ export function Hero({ onStartJourney }: HeroProps) {
               size="lg" 
               className="bg-gradient-to-r from-orange-600 via-blue-600 to-orange-500 hover:from-orange-700 hover:via-blue-700 hover:to-orange-600 text-white px-8 py-6 text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
             >
-              Iniciar Avaliação de Competências
+              Acessar Sistema
               <ArrowRight className="w-5 h-5 ml-2" />
             </Button>
             <p className="text-sm text-muted-foreground">

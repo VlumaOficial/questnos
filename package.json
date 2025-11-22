@@ -10,6 +10,7 @@
     "build:client": "node scripts/generate-policies.js && vite build --mode production",
     "build:protected": "node scripts/build-protected.js",
     "generate-policies": "node scripts/generate-policies.js",
+    "create-admin": "node scripts/create-admin.js",
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest",
