@@ -84,9 +84,9 @@ function calculateSkillPerformance(
   skill: Skill,
   answers: any[]
 ): SkillPerformance {
-  const subSkillsPerformance = skill.subSkills.map((subSkill) =>
-    calculateSubSkillPerformance(subSkill, answers)
-  );
+  const subSkillsPerformance = skill.subSkills && skill.subSkills.length > 0 
+    ? skill.subSkills.map((subSkill) => calculateSubSkillPerformance(subSkill, answers))
+    : [];
 
   // Média simples (sem peso)
   const totalScore = subSkillsPerformance.reduce((sum, sp) => sum + sp.score, 0);
@@ -108,9 +108,9 @@ export function calculateSubjectPerformance(
   subject: Subject,
   answers: any[]
 ): SubjectPerformance {
-  const skillsPerformance = subject.skills.map((skill) =>
-    calculateSkillPerformance(skill, answers)
-  );
+  const skillsPerformance = subject.skills && subject.skills.length > 0
+    ? subject.skills.map((skill) => calculateSkillPerformance(skill, answers))
+    : [];
 
   // Média simples (sem peso)
   const totalScore = skillsPerformance.reduce((sum, sp) => sum + sp.avgScore, 0);
@@ -131,9 +131,9 @@ export function calculateSubjectPerformance(
 export function calculateAllSubjectsPerformance(
   answers: any[]
 ): SubjectPerformance[] {
-  return SUBJECT_HIERARCHY.map((subject) =>
-    calculateSubjectPerformance(subject, answers)
-  );
+  return SUBJECT_HIERARCHY && SUBJECT_HIERARCHY.length > 0
+    ? SUBJECT_HIERARCHY.map((subject) => calculateSubjectPerformance(subject, answers))
+    : [];
 }
 
 /**

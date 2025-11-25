@@ -61,7 +61,7 @@ export default function SubjectPerformanceModule({
         </CardHeader>
         <CardContent>
           <div className="space-y-3">
-            {subjectsPerformance.map((subjectPerf) => {
+            {subjectsPerformance && subjectsPerformance.length > 0 ? subjectsPerformance.map((subjectPerf) => {
               const subjectLevel = getLevelClassification(subjectPerf.avgScore);
               const isSubjectExpanded = expandedSubject === subjectPerf.subject.id;
 
@@ -81,7 +81,7 @@ export default function SubjectPerformanceModule({
                       <div className="text-left">
                         <h3 className="font-semibold text-lg">{subjectPerf.subject.label}</h3>
                         <p className="text-sm text-muted-foreground">
-                          {subjectPerf.subject.skills.length} habilidade(s)
+                          {subjectPerf.subject.skills?.length || 0} habilidade(s)
                         </p>
                       </div>
                     </div>
@@ -98,7 +98,7 @@ export default function SubjectPerformanceModule({
                   {/* HABILIDADES (expandido) */}
                   {isSubjectExpanded && (
                     <div className="border-t bg-muted/20">
-                      {subjectPerf.skillsPerformance.map((skillPerf) => {
+                      {subjectPerf.skillsPerformance && subjectPerf.skillsPerformance.length > 0 ? subjectPerf.skillsPerformance.map((skillPerf) => {
                         const skillLevel = getLevelClassification(skillPerf.avgScore);
                         const isSkillExpanded = expandedSkill === skillPerf.skill.id;
 
@@ -118,7 +118,7 @@ export default function SubjectPerformanceModule({
                                 <div className="text-left">
                                   <h4 className="font-medium">{skillPerf.skill.label}</h4>
                                   <p className="text-xs text-muted-foreground">
-                                    {skillPerf.skill.subSkills.length} sub-habilidade(s)
+                                    {skillPerf.skill.subSkills?.length || 0} sub-habilidade(s)
                                   </p>
                                 </div>
                               </div>
@@ -135,7 +135,7 @@ export default function SubjectPerformanceModule({
                             {/* SUB-HABILIDADES (expandido) */}
                             {isSkillExpanded && (
                               <div className="bg-background">
-                                {skillPerf.subSkillsPerformance.map((subSkillPerf) => {
+                                {skillPerf.subSkillsPerformance && skillPerf.subSkillsPerformance.length > 0 ? skillPerf.subSkillsPerformance.map((subSkillPerf) => {
                                   const subSkillLevel = getLevelClassification(subSkillPerf.score);
 
                                   return (
@@ -161,23 +161,30 @@ export default function SubjectPerformanceModule({
                                       </div>
                                     </button>
                                   );
-                                })}
+                                }) : (
+                                  <div className="p-2 pl-20 text-sm text-muted-foreground">
+                                    Nenhuma sub-habilidade disponível
+                                  </div>
+                                )}
                               </div>
                             )}
                           </div>
                         );
-                      })}
+                      }) : (
+                        <div className="p-3 pl-12 text-sm text-muted-foreground">
+                          Nenhuma habilidade disponível
+                        </div>
+                      )}
                     </div>
                   )}
                 </div>
               );
-            })}
-
-            {subjectsPerformance.length === 0 && (
+            }) : (
               <div className="text-center py-8 text-muted-foreground">
                 Nenhum dado de desempenho disponível
               </div>
             )}
+
           </div>
         </CardContent>
       </Card>
@@ -218,7 +225,7 @@ export default function SubjectPerformanceModule({
                 <h4 className="font-semibold mb-3">Respostas do Candidato:</h4>
                 {selectedSubSkill.answers.length > 0 ? (
                   <div className="space-y-2">
-                    {selectedSubSkill.answers.map((answer, index) => (
+                    {selectedSubSkill.answers && selectedSubSkill.answers.length > 0 ? selectedSubSkill.answers.map((answer, index) => (
                       <div 
                         key={index}
                         className="p-3 border rounded-lg"
@@ -235,7 +242,11 @@ export default function SubjectPerformanceModule({
                           </Badge>
                         </div>
                       </div>
-                    ))}
+                    )) : (
+                      <div className="text-center py-6 text-muted-foreground border rounded-lg">
+                        Nenhuma resposta encontrada
+                      </div>
+                    )}
                   </div>
                 ) : (
                   <div className="text-center py-6 text-muted-foreground border rounded-lg">
