@@ -89,7 +89,7 @@ export function InclusiveColorGuide() {
       </CardHeader>
       <CardContent>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {inclusiveColors.map((color, index) => {
+          {inclusiveColors && inclusiveColors.length > 0 ? inclusiveColors.map((color, index) => {
             const IconComponent = color.icon;
             return (
               <div 
@@ -111,7 +111,7 @@ export function InclusiveColorGuide() {
                 
                 <div className="space-y-2">
                   <div className="flex flex-wrap gap-1">
-                    {color.groups.map((group, groupIndex) => (
+                    {color.groups && color.groups.length > 0 ? color.groups.map((group, groupIndex) => (
                       <Badge 
                         key={groupIndex}
                         variant="secondary" 
@@ -124,7 +124,11 @@ export function InclusiveColorGuide() {
                       >
                         {group}
                       </Badge>
-                    ))}
+                    )) : (
+                      <span className="text-xs text-muted-foreground">
+                        Nenhum grupo definido
+                      </span>
+                    )}
                   </div>
                   <p className="text-xs text-muted-foreground leading-relaxed">
                     {color.description}
@@ -132,7 +136,11 @@ export function InclusiveColorGuide() {
                 </div>
               </div>
             );
-          })}
+          }) : (
+            <div className="text-center py-8 text-muted-foreground col-span-full">
+              Nenhuma cor disponível
+            </div>
+          )}
         </div>
         
         <div className="mt-6 p-4 bg-muted/30 rounded-lg">

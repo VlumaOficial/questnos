@@ -686,7 +686,7 @@ export function AdminBranding() {
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="space-y-4">
-                {Object.entries(config.features).map(([key, enabled]) => {
+                {config.features && Object.keys(config.features).length > 0 ? Object.entries(config.features).map(([key, enabled]) => {
                   const featureLabels = {
                     questionnaire: 'Questionário de Habilidades',
                     admin: 'Dashboard Administrativo',
@@ -716,7 +716,11 @@ export function AdminBranding() {
                       />
                     </div>
                   );
-                })}
+                }) : (
+                  <div className="text-center py-8 text-muted-foreground">
+                    Nenhum recurso disponível
+                  </div>
+                )}
               </div>
             </CardContent>
           </Card>

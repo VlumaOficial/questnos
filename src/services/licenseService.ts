@@ -352,9 +352,11 @@ class LicenseService {
         };
       }
 
-      const features = Object.entries(license.licensed_features)
-        .filter(([_, enabled]) => enabled === true)
-        .map(([feature, _]) => feature);
+      const features = license.licensed_features && Object.keys(license.licensed_features).length > 0 
+        ? Object.entries(license.licensed_features)
+          .filter(([_, enabled]) => enabled === true)
+          .map(([feature, _]) => feature)
+        : [];
 
       return {
         clientId: license.client_id,

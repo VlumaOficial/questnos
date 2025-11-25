@@ -139,7 +139,7 @@ export default function AdminPortal() {
 
         {/* Estatísticas Rápidas */}
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-8">
-          {quickStats.map((stat, index) => (
+          {quickStats && quickStats.length > 0 ? quickStats.map((stat, index) => (
             <Card key={index} className="p-6">
               <div className="flex items-center justify-between">
                 <div>
@@ -157,14 +157,18 @@ export default function AdminPortal() {
                 </div>
               </div>
             </Card>
-          ))}
+          )) : (
+            <div className="text-center py-8 text-muted-foreground col-span-full">
+              Nenhuma estatística disponível
+            </div>
+          )}
         </div>
 
         {/* Módulos Administrativos */}
         <div className="mb-8">
           <h2 className="text-2xl font-bold mb-6">Módulos do Sistema</h2>
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {adminModules.map((module) => (
+            {adminModules && adminModules.length > 0 ? adminModules.map((module) => (
               <Card 
                 key={module.id} 
                 className="group cursor-pointer transition-all duration-300 hover:shadow-xl hover:scale-105 border-2 hover:border-orange-200"
@@ -186,12 +190,16 @@ export default function AdminPortal() {
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-2">
-                    {module.features.map((feature, index) => (
+                    {module.features && module.features.length > 0 ? module.features.map((feature, index) => (
                       <div key={index} className="flex items-center gap-2 text-sm text-muted-foreground">
                         <CheckCircle className="w-4 h-4 text-green-600" />
                         <span>{feature}</span>
                       </div>
-                    ))}
+                    )) : (
+                      <div className="text-sm text-muted-foreground">
+                        Nenhuma funcionalidade listada
+                      </div>
+                    )}
                   </div>
                   <Button 
                     className="w-full mt-4 bg-gradient-to-r from-orange-600 via-blue-600 to-orange-500 hover:from-orange-700 hover:via-blue-700 hover:to-orange-600"
@@ -205,7 +213,11 @@ export default function AdminPortal() {
                   </Button>
                 </CardContent>
               </Card>
-            ))}
+            )) : (
+              <div className="text-center py-8 text-muted-foreground col-span-full">
+                Nenhum módulo disponível
+              </div>
+            )}
           </div>
         </div>
 

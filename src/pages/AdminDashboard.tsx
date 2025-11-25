@@ -85,7 +85,7 @@ export default function AdminDashboard() {
   const filteredAnswers = selectedCandidateForPerformance && allAnswers
     ? allAnswers.filter(a => {
         // Buscar assessment_id do candidato selecionado para performance
-        const candidateAssessmentIds = performanceCandidateAssessments?.map(ca => ca.id) || [];
+        const candidateAssessmentIds = performanceCandidateAssessments && performanceCandidateAssessments.length > 0 ? performanceCandidateAssessments.map(ca => ca.id) : [];
         return candidateAssessmentIds.includes(a.assessment_id);
       })
     : allAnswers || [];
@@ -415,7 +415,7 @@ export default function AdminDashboard() {
                   <div className="text-center py-8">Carregando candidatos...</div>
                 ) : (
                   <div className="space-y-4">
-                    {filteredCandidates?.map((candidate) => (
+                    {filteredCandidates && filteredCandidates.length > 0 ? filteredCandidates.map((candidate) => (
                       <div 
                         key={candidate.id}
                         className="flex items-center justify-between p-4 border rounded-lg hover:bg-muted/50 transition-colors"
@@ -479,9 +479,7 @@ export default function AdminDashboard() {
                           </Button>
                         </div>
                       </div>
-                    ))}
-                    
-                    {candidates?.length === 0 && (
+                    )) : (
                       <div className="text-center py-8 text-muted-foreground">
                         Nenhum candidato encontrado
                       </div>
@@ -662,7 +660,7 @@ export default function AdminDashboard() {
                     <div className="text-center py-8">Carregando avaliações...</div>
                   ) : candidateAssessments && candidateAssessments.length > 0 ? (
                     <div className="space-y-3">
-                      {candidateAssessments.map((assessment) => (
+                      {candidateAssessments && candidateAssessments.length > 0 ? candidateAssessments.map((assessment) => (
                         <div 
                           key={assessment.id}
                           className="flex items-center justify-between p-3 border rounded-lg"
@@ -709,7 +707,11 @@ export default function AdminDashboard() {
                             )}
                           </div>
                         </div>
-                      ))}
+                      )) : (
+                        <div className="text-center py-4 text-muted-foreground">
+                          Nenhuma avaliação encontrada
+                        </div>
+                      )}
                     </div>
                   ) : (
                     <div className="text-center py-8 text-muted-foreground">

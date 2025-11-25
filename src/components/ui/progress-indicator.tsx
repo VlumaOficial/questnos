@@ -32,7 +32,7 @@ export function ProgressIndicator({ steps, currentStep, className }: ProgressInd
 
       {/* Desktop Step Indicator */}
       <div className="hidden md:flex items-center justify-between mb-8">
-        {steps.map((step, index) => (
+        {steps && steps.length > 0 ? steps.map((step, index) => (
           <div key={step.id} className="flex items-center">
             {/* Step Circle */}
             <div className="flex flex-col items-center">
@@ -72,7 +72,11 @@ export function ProgressIndicator({ steps, currentStep, className }: ProgressInd
               )} />
             )}
           </div>
-        ))}
+        )) : (
+          <div className="text-center py-4 text-muted-foreground">
+            Nenhuma etapa disponível
+          </div>
+        )}
       </div>
     </div>
   );
