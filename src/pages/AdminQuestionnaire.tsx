@@ -359,7 +359,7 @@ export function AdminQuestionnaire() {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {subjects.map((subject) => (
+                {subjects && subjects.length > 0 ? subjects.map((subject) => (
                   <Card key={subject.id} className="border-l-4 border-l-blue-500">
                     <CardHeader className="pb-3">
                       <div className="flex items-center justify-between">
@@ -433,12 +433,12 @@ export function AdminQuestionnaire() {
                                   </div>
                                 </div>
                                 
-                                {subSubject.questions.length > 0 && (
+                                {subSubject.questions && subSubject.questions.length > 0 && (
                                   <div className="space-y-2 ml-4">
                                     {subSubject.questions.map((question, index) => (
                                       <div key={question.id} className="flex items-center gap-3 p-2 bg-muted/30 rounded">
                                         <HelpCircle className="w-4 h-4 text-muted-foreground" />
-                                        <span className="text-sm flex-1">{question.text}</span>
+                                        <span className="text-sm flex-1">{question.question_text}</span>
                                         <div className="flex gap-1">
                                           <Button variant="ghost" size="sm">
                                             <Edit className="w-3 h-3" />
@@ -458,7 +458,13 @@ export function AdminQuestionnaire() {
                       </CardContent>
                     )}
                   </Card>
-                ))}
+                )) : (
+                  <div className="text-center py-8 text-muted-foreground">
+                    <BookOpen className="w-12 h-12 mx-auto mb-4 opacity-50" />
+                    <p>Nenhuma matéria encontrada</p>
+                    <p className="text-sm">Clique em "Nova Matéria" para começar</p>
+                  </div>
+                )}
               </div>
             </CardContent>
           </Card>
@@ -514,23 +520,23 @@ export function AdminQuestionnaire() {
             </CardHeader>
             <CardContent>
               <div className="space-y-6">
-                {subjects.map((subject, subjectIndex) => (
+                {subjects && subjects.length > 0 ? subjects.map((subject, subjectIndex) => (
                   <div key={subject.id} className="border rounded-lg p-6">
                     <h2 className="text-xl font-bold mb-4">
                       {subjectIndex + 1}. {subject.name}
                     </h2>
                     
-                    {subject.subSubjects.map((subSubject, subIndex) => (
+                    {subject.sub_subjects && subject.sub_subjects.map((subSubject, subIndex) => (
                       <div key={subSubject.id} className="mb-6">
                         <h3 className="text-lg font-semibold mb-3 text-blue-600">
                           {subjectIndex + 1}.{subIndex + 1} {subSubject.name}
                         </h3>
                         
                         <div className="space-y-4">
-                          {subSubject.questions.map((question, qIndex) => (
+                          {subSubject.questions && subSubject.questions.map((question, qIndex) => (
                             <div key={question.id} className="bg-muted/30 p-4 rounded">
                               <p className="font-medium mb-2">
-                                {question.text}
+                                {question.question_text}
                               </p>
                               <div className="flex gap-2">
                                 {[1, 2, 3, 4, 5].map(value => (
@@ -546,7 +552,13 @@ export function AdminQuestionnaire() {
                       </div>
                     ))}
                   </div>
-                ))}
+                )) : (
+                  <div className="text-center py-8 text-muted-foreground">
+                    <HelpCircle className="w-12 h-12 mx-auto mb-4 opacity-50" />
+                    <p>Nenhum questionário para visualizar</p>
+                    <p className="text-sm">Adicione matérias e perguntas primeiro</p>
+                  </div>
+                )}
               </div>
             </CardContent>
           </Card>
