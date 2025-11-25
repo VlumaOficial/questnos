@@ -59,7 +59,7 @@ const FormSection: React.FC<FormSectionProps> = ({
         )}
       </CardHeader>
       <CardContent className={cn("pt-6 space-y-4", className)}>
-        {fields.map((field) => (
+        {fields && fields.length > 0 ? fields.map((field) => (
           <FormField
             key={field.name}
             control={control}
@@ -98,7 +98,11 @@ const FormSection: React.FC<FormSectionProps> = ({
               </FormItem>
             )}
           />
-        ))}
+        )) : (
+          <div className="text-center py-8 text-muted-foreground">
+            Nenhum campo disponível
+          </div>
+        )}
       </CardContent>
     </Card>
   );

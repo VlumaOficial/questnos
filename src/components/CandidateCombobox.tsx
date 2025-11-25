@@ -111,7 +111,7 @@ export default function CandidateCombobox({
             </CommandItem>
 
             {/* Lista de Candidatos */}
-            {filteredCandidates.map((candidate) => (
+            {filteredCandidates && filteredCandidates.length > 0 ? filteredCandidates.map((candidate) => (
               <CommandItem
                 key={candidate.id}
                 value={candidate.id}
@@ -133,7 +133,11 @@ export default function CandidateCombobox({
                   <span className="text-xs text-muted-foreground">{candidate.email}</span>
                 </div>
               </CommandItem>
-            ))}
+            )) : (
+              <CommandItem disabled>
+                <span className="text-muted-foreground">Nenhum candidato disponível</span>
+              </CommandItem>
+            )}
           </CommandGroup>
         </Command>
       </PopoverContent>

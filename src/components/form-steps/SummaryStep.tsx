@@ -25,7 +25,7 @@ const formatKey = (key: string) => {
 const RenderData: React.FC<{ data: any, level: number, stepIndex: number, onNavigate: (stepIndex: number) => void }> = ({ data, level, stepIndex, onNavigate }) => {
   if (!data || typeof data !== 'object') return null;
 
-  return Object.entries(data).map(([key, value]) => {
+  return data && typeof data === 'object' && Object.keys(data).length > 0 ? Object.entries(data).map(([key, value]) => {
     const formattedKey = formatKey(key);
     const isNestedObject = typeof value === "object" && value !== null && !Array.isArray(value);
     const isNumber = typeof value === "number";
@@ -63,7 +63,7 @@ const RenderData: React.FC<{ data: any, level: number, stepIndex: number, onNavi
       );
     }
     return null;
-  });
+  }) : [];
 };
 
 const SummaryStep: React.FC<SummaryStepProps> = ({ onNavigateToStep }) => {
@@ -114,7 +114,7 @@ const SummaryStep: React.FC<SummaryStepProps> = ({ onNavigateToStep }) => {
             value={openSection}
             onValueChange={(value) => setOpenSection(value === openSection ? undefined : value)}
           >
-            {sections.map(section => (
+            {sections && sections.length > 0 ? sections.map(section => (
               <AccordionItem 
                 key={section.key} 
                 value={section.key}
@@ -136,7 +136,11 @@ const SummaryStep: React.FC<SummaryStepProps> = ({ onNavigateToStep }) => {
                   </div>
                 </AccordionContent>
               </AccordionItem>
-            ))}
+            )) : (
+              <div className="text-center py-8 text-muted-foreground">
+                Nenhuma seção disponível
+              </div>
+            )}
           </Accordion>
         </CardContent>
       </Card>
