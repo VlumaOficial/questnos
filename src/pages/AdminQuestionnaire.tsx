@@ -30,8 +30,6 @@ import {
 } from 'lucide-react';
 
 export function AdminQuestionnaire() {
-  console.log('🔧 DEBUG - AdminQuestionnaire: Componente iniciado');
-  
   const [subjects, setSubjects] = useState<DynamicSubject[]>([]);
   const [activeTab, setActiveTab] = useState('subjects');
   const [editingItem, setEditingItem] = useState<any>(null);
@@ -39,8 +37,6 @@ export function AdminQuestionnaire() {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [importProgress, setImportProgress] = useState<{ importing: boolean; progress?: number }>({ importing: false });
-  
-  console.log('🔧 DEBUG - AdminQuestionnaire: subjects state:', subjects);
 
   // Carregar dados existentes
   useEffect(() => {
@@ -48,20 +44,15 @@ export function AdminQuestionnaire() {
   }, []);
 
   const loadQuestionnaire = async () => {
-    console.log('🔧 DEBUG - loadQuestionnaire: Iniciando carregamento');
     setLoading(true);
     setError(null);
     
     try {
       // Carregar estrutura atual do banco de dados
       const structure = await questionnaireService.getQuestionnaireStructure();
-      console.log('🔧 DEBUG - loadQuestionnaire: Estrutura recebida:', structure);
-      console.log('🔧 DEBUG - loadQuestionnaire: Tipo da estrutura:', typeof structure);
-      console.log('🔧 DEBUG - loadQuestionnaire: É array?', Array.isArray(structure));
       setSubjects(structure);
-      console.log('🔧 DEBUG - loadQuestionnaire: subjects setado com sucesso');
     } catch (error) {
-      console.error('❌ ERRO - loadQuestionnaire:', error);
+      console.error('Erro ao carregar questionário:', error);
       setError('Erro ao carregar estrutura do questionário');
     } finally {
       setLoading(false);
@@ -529,13 +520,7 @@ export function AdminQuestionnaire() {
             </CardHeader>
             <CardContent>
               <div className="space-y-6">
-                {(() => {
-                  console.log('🔧 DEBUG - Preview render: subjects:', subjects);
-                  console.log('🔧 DEBUG - Preview render: subjects type:', typeof subjects);
-                  console.log('🔧 DEBUG - Preview render: subjects isArray:', Array.isArray(subjects));
-                  return subjects && subjects.length > 0 ? subjects.map((subject, subjectIndex) => {
-                    console.log('🔧 DEBUG - Preview render: subject:', subject);
-                    return (
+                {subjects && subjects.length > 0 ? subjects.map((subject, subjectIndex) => (
                   <div key={subject.id} className="border rounded-lg p-6">
                     <h2 className="text-xl font-bold mb-4">
                       {subjectIndex + 1}. {subject.name}
@@ -567,15 +552,13 @@ export function AdminQuestionnaire() {
                       </div>
                     ))}
                   </div>
-                    );
-                  }) : (
-                    <div className="text-center py-8 text-muted-foreground">
-                      <HelpCircle className="w-12 h-12 mx-auto mb-4 opacity-50" />
-                      <p>Nenhum questionário para visualizar</p>
-                      <p className="text-sm">Adicione matérias e perguntas primeiro</p>
-                    </div>
-                  );
-                })()}
+                )) : (
+                  <div className="text-center py-8 text-muted-foreground">
+                    <HelpCircle className="w-12 h-12 mx-auto mb-4 opacity-50" />
+                    <p>Nenhum questionário para visualizar</p>
+                    <p className="text-sm">Adicione matérias e perguntas primeiro</p>
+                  </div>
+                )}
               </div>
             </CardContent>
           </Card>

@@ -77,22 +77,19 @@ const ChartStyle = ({ id, config }: { id: string; config: ChartConfig }) => {
   return (
     <style
       dangerouslySetInnerHTML={{
-        __html: Object.entries(THEMES)
-          .map(
+        __html: Object.entries(THEMES) && Object.entries(THEMES).length > 0 ?
+          Object.entries(THEMES).map(
             ([theme, prefix]) => `
 ${prefix} [data-chart=${id}] {
-${colorConfig
-  .map(([key, itemConfig]) => {
+${colorConfig && colorConfig.length > 0 ? colorConfig.map(([key, itemConfig]) => {
     const color =
       itemConfig.theme?.[theme as keyof typeof itemConfig.theme] ||
       itemConfig.color;
     return color ? `  --color-${key}: ${color};` : null;
-  })
-  .join("\n")}
+  }).join("\n") : ''}
 }
 `,
-          )
-          .join("\n"),
+          ).join("\n") : '',
       }}
     />
   );
@@ -183,7 +180,7 @@ const ChartTooltipContent = React.forwardRef<
       >
         {!nestLabel ? tooltipLabel : null}
         <div className="grid gap-1.5">
-          {payload.map((item, index) => {
+          {payload && payload.length > 0 ? payload.map((item, index) => {
             const key = `${nameKey || item.name || item.dataKey || "value"}`;
             const itemConfig = getPayloadConfigFromPayload(config, item, key);
             const indicatorColor = color || item.payload.fill || item.color;
@@ -246,7 +243,7 @@ const ChartTooltipContent = React.forwardRef<
                 )}
               </div>
             );
-          })}
+          }) : null}
         </div>
       </div>
     );
@@ -283,7 +280,7 @@ const ChartLegendContent = React.forwardRef<
           className,
         )}
       >
-        {payload.map((item) => {
+        {payload && payload.length > 0 ? payload.map((item) => {
           const key = `${nameKey || item.dataKey || "value"}`;
           const itemConfig = getPayloadConfigFromPayload(config, item, key);
 
@@ -307,7 +304,7 @@ const ChartLegendContent = React.forwardRef<
               {itemConfig?.label}
             </div>
           );
-        })}
+        }) : null}
       </div>
     );
   },
