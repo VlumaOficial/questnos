@@ -38,7 +38,7 @@ export default function AssessmentAnswersModal({ assessmentId, onClose }: Assess
             <div className="text-center py-8">Carregando respostas...</div>
           ) : (
             <div className="space-y-6">
-              {Object.entries(answersBySubject).map(([subjectName, subjectAnswers]) => (
+              {Object.entries(answersBySubject) && Object.entries(answersBySubject).length > 0 ? Object.entries(answersBySubject).map(([subjectName, subjectAnswers]) => (
                 <Card key={subjectName}>
                   <CardHeader>
                     <CardTitle className="text-lg flex items-center justify-between">
@@ -50,7 +50,7 @@ export default function AssessmentAnswersModal({ assessmentId, onClose }: Assess
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-4">
-                      {subjectAnswers?.map((answer, index) => (
+                      {subjectAnswers && subjectAnswers.length > 0 ? subjectAnswers.map((answer, index) => (
                         <div key={answer.id} className={`border-l-4 pl-4 ${
                           answer.is_personal_data 
                             ? 'border-l-blue-500 bg-blue-50/50' 
@@ -96,11 +96,19 @@ export default function AssessmentAnswersModal({ assessmentId, onClose }: Assess
                             </div>
                           </div>
                         </div>
-                      ))}
+                      )) : (
+                        <div className="text-center py-4 text-muted-foreground">
+                          Nenhuma resposta encontrada
+                        </div>
+                      )}
                     </div>
                   </CardContent>
                 </Card>
-              ))}
+              )) : (
+                <div className="text-center py-8 text-muted-foreground">
+                  Nenhuma resposta disponível
+                </div>
+              )}
             </div>
           )}
         </ScrollArea>

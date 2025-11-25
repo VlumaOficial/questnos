@@ -171,14 +171,14 @@ export class AssessmentService {
         }
 
         // Transformar dados para o formato esperado
-        return (candidatesData || []).map(candidate => ({
+        return candidatesData && candidatesData.length > 0 ? candidatesData.map(candidate => ({
           ...candidate,
           registration_date: candidate.created_at,
           total_assessments: 0,
           completed_assessments: 0,
           avg_score: 0,
           last_assessment_date: null
-        }));
+        })) : [];
       }
 
       return data || [];
@@ -247,7 +247,7 @@ export class AssessmentService {
       const assessment = await this.startAssessment(submission.candidate_id);
 
       // 2. Salvar todas as respostas
-      const answersToInsert = submission.answers.map(answer => ({
+      const answersToInsert = submission.answers && submission.answers.length > 0 ? submission.answers.map(answer => ({
         assessment_id: assessment.id,
         subject_id: answer.subject_id,
         question_number: answer.question_number,
@@ -256,7 +256,7 @@ export class AssessmentService {
         answer_score: answer.answer_score || 0,
         is_correct: answer.is_correct || false,
         time_spent_seconds: answer.time_spent_seconds || 0
-      }));
+      })) : [];
 
       const { error: answersError } = await supabase
         .from('assessment_answers')
@@ -378,12 +378,12 @@ export class AssessmentService {
     console.log('🔧 DEBUG - Dados pessoais encontrados:', candidate ? 'Sim' : 'Não');
     
     // Mapear respostas do questionário
-    const questionnaireAnswers = answers?.map(answer => ({
+    const questionnaireAnswers = answers && answers.length > 0 ? answers.map(answer => ({
       ...answer,
       subject_name: 'Competências Técnicas',
       question_text: answer.question_text || `Questão ${answer.question_number}`,
       is_personal_data: false
-    })) || [];
+    })) : [];
 
     // Adicionar dados pessoais como "questões" especiais
     const personalDataAnswers = [];
@@ -484,7 +484,8 @@ export class AssessmentService {
         { field: candidate.instagram_url, label: 'Instagram' }
       ];
 
-      urls.forEach(({ field, label }) => {
+      if (urls && urls.length > 0) {
+        urls.forEach(({ field, label }) => {
         if (field) {
           personalDataAnswers.push({
             id: `personal_${personalQuestionNumber}`,
@@ -501,7 +502,8 @@ export class AssessmentService {
             created_at: new Date().toISOString()
           });
         }
-      });
+        });
+      }
     }
 
     console.log('🔧 DEBUG - Dados pessoais adicionados:', personalDataAnswers.length);
@@ -555,7 +557,7 @@ export class AssessmentService {
         }
 
         // Transformar dados para o formato esperado
-        return (subjectsData || []).map(subject => ({
+        return subjectsData && subjectsData.length > 0 ? subjectsData.map(subject => ({
           subject_id: subject.id,
           subject_name: subject.name,
           subject_description: subject.description,
@@ -564,7 +566,7 @@ export class AssessmentService {
           avg_score: 0,
           correct_answers: 0,
           success_rate_percentage: 0
-        }));
+        })) : [];
       }
 
       return data || [];
@@ -601,7 +603,7 @@ export class AssessmentService {
           .select('question_number')
           .order('question_number');
         
-        const totalQuestions = uniqueQuestions ? 
+        const totalQuestions = uniqueQuestions && uniqueQuestions.length > 0 ? 
           new Set(uniqueQuestions.map(q => q.question_number)).size : 0;
         
         // Calcular taxa de conclusão
@@ -715,7 +717,7 @@ export class AssessmentService {
 
       // 2. Deletar todas as respostas dos assessments
       if (assessments && assessments.length > 0) {
-        const assessmentIds = assessments.map(a => a.id);
+        const assessmentIds = assessments && assessments.length > 0 ? assessments.map(a => a.id) : [];
         
         const { error: answersError } = await supabase
           .from('assessment_answers')
